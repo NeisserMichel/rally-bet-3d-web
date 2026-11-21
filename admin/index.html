@@ -73,7 +73,7 @@
       <p class="sub">Solo después de confirmar que el Yape llegó a tu cuenta.</p>
       <div class="card">
         <div class="row">
-          <div><label class="f" for="q">ID de jugador o nombre</label><input class="in" id="q" autocomplete="off" placeholder="10002 o Roicer"></div>
+          <div><label class="f" for="q">ID, nombre o celular</label><input class="in" id="q" autocomplete="off" placeholder="10002, Roicer o 917486188"></div>
           <div style="flex:0 0 auto"><button class="btn gray" id="find" type="button">BUSCAR</button></div>
         </div>
         <div class="results" id="results"></div>
@@ -185,6 +185,8 @@
     YAPE_OP_ALREADY_USED: 'Ese número de operación de Yape ya se usó en otra recarga.',
     RECHARGE_NOT_FOUND: 'No se encontró la recarga.',
     ALREADY_REVERSED: 'Esa recarga ya estaba anulada.',
+    PHONE_INVALID: 'El celular debe tener 9 dígitos y empezar con 9.',
+    PHONE_TAKEN: 'Ese celular ya está registrado en otra cuenta.',
     NOT_ENOUGH_COINS: 'El jugador ya gastó esas monedas; no se puede anular por completo. Usa "Restar monedas" para quitarle lo que le quede.',
     COINS_INVALID: 'Escribe una cantidad de monedas válida (mayor a 0).',
     REASON_REQUIRED: 'Escribe el motivo del descuento.'
@@ -257,18 +259,37 @@
     if (r.data.length === 1 && /^#?\d+$/.test(q)) { choose(r.data[0]); return; }
     r.data.forEach(function (p) {
       var b = document.createElement('button'); b.type = 'button';
-      b.textContent = '#' + p.player_number + ' · ' + p.username + ' · ' + p.coins + ' monedas';
+      b.textContent = '#' + p.player_number + ' · ' + p.username + ' · ' + fmtPhone(p.phone) + ' · ' + p.coins + ' monedas';
       b.onclick = function () { choose(p); };
       $('results').appendChild(b);
     });
+  }
+  function fmtPhone(ph) {
+    if (!ph) return 'sin celular';
+    return '+51 ' + ph.slice(0, 3) + ' ' + ph.slice(3, 6) + ' ' + ph.slice(6);
   }
   function choose(p) {
     chosen = p;
     $('results').innerHTML = '';
     var c = $('chosen'); c.classList.remove('hidden');
-    c.innerHTML = 'Jugador: <b></b> · ID <b></b> · saldo actual: <b></b> monedas';
+    c.innerHTML = '<div>Jugador: <b></b> · ID <b></b> · saldo actual: <b></b> monedas</div>' +
+      '<div style="margin-top:6px;font-size:18px">Celular registrado: <b class="ph"></b> ' +
+      '<a class="wa" target="_blank" rel="noopener" style="margin-left:8px">abrir su WhatsApp</a> ' +
+      '<button type="button" class="btn small gray chg" style="margin-left:8px">Cambiar celular</button></div>' +
+      '<div class="hint">Verifica que el WhatsApp y el Yape vengan de este número antes de cargar.</div>';
     var bs = c.querySelectorAll('b');
     bs[0].textContent = p.username; bs[1].textContent = '#' + p.player_number; bs[2].textContent = p.coins;
+    c.querySelector('.ph').textContent = fmtPhone(p.phone);
+    var wa = c.querySelector('.wa');
+    if (p.phone) wa.href = 'https://wa.me/51' + p.phone; else wa.remove();
+    c.querySelector('.chg').onclick = async function () {
+      var n = window.prompt('Nuevo celular de ' + p.username + ' (#' + p.player_number + '):', p.phone || '');
+      if (n === null) return;
+      var r = await sb.rpc('admin_set_phone', { p_player_number: p.player_number, p_phone: n });
+      if (r.error) { $('formErr').textContent = msg(r.error); return; }
+      p.phone = r.data; choose(p);
+      $('okMsg').textContent = 'Celular actualizado: ' + fmtPhone(r.data);
+    };
     $('form').classList.remove('hidden');
     $('confirm').classList.add('hidden'); $('okMsg').textContent = '';
     updatePreview();
@@ -304,7 +325,8 @@
     var a = currentAmount();
     if (!isFinite(a) || a <= 0) { $('formErr').textContent = 'Escribe un monto válido.'; return; }
     if (Math.abs(a * 10 - Math.round(a * 10)) > 1e-6) { $('formErr').textContent = ERR.AMOUNT_NOT_MULTIPLE_OF_10_CENTS; return; }
-    $('confirmText').textContent = '¿Cargar ' + coinsFor(a) + ' monedas (' + soles(a) + ') a ' + chosen.username + ' (#' + chosen.player_number + ')?';
+    $('confirmText').textContent = '¿Cargar ' + coinsFor(a) + ' monedas (' + soles(a) + ') a ' + chosen.username + ' (#' + chosen.player_number + ')? ' +
+      'Confirma que el WhatsApp y el Yape vinieron de ' + fmtPhone(chosen.phone) + '.';
     $('confirm').classList.remove('hidden');
   };
   $('cancel').onclick = function () { $('confirm').classList.add('hidden'); };
@@ -391,7 +413,7 @@
     var p = (r.data || []).filter(function (x) { return String(x.player_number) === id; })[0];
     if (!p) { $('dInfo').textContent = 'No existe un jugador con ese ID.'; return null; }
     dTarget = p;
-    $('dInfo').textContent = 'Jugador: ' + p.username + ' (#' + p.player_number + ') · saldo actual: ' + p.coins + ' monedas';
+    $('dInfo').textContent = 'Jugador: ' + p.username + ' (#' + p.player_number + ') · celular ' + fmtPhone(p.phone) + ' · saldo actual: ' + p.coins + ' monedas';
     return p;
   }
   $('dId').addEventListener('change', dLookup);

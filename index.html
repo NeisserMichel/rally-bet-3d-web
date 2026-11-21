@@ -36,7 +36,7 @@
       <div class="step"><div class="n">1</div><h3>Descarga</h3><p>Toca <b>Descargar para Android</b> desde tu celular. Si Chrome pregunta, toca <b>Descargar de todos modos</b>.</p></div>
       <div class="step"><div class="n">2</div><h3>Abre el archivo</h3><p>Al terminar, toca la notificación o busca <b>RallyBet3D.apk</b> en la carpeta Descargas.</p></div>
       <div class="step"><div class="n">3</div><h3>Permite la instalación</h3><p>Si aparece "por seguridad…", toca <b>Configuración</b> y activa <b>Permitir de esta fuente</b>. Luego vuelve e instala.</p></div>
-      <div class="step"><div class="n">4</div><h3>Crea tu cuenta</h3><p>Regístrate con tu correo. Tu <b>ID de jugador</b> (por ejemplo #10002) aparece en el menú.</p></div>
+      <div class="step"><div class="n">4</div><h3>Crea tu cuenta</h3><p>Regístrate con tu correo y tu <b>celular de WhatsApp y Yape</b>. Tu <b>ID de jugador</b> (por ejemplo #10002) aparece en el menú.</p></div>
     </div>
     <p class="hint" style="margin-top:14px">¿Ya lo tienes? Instala la versión nueva encima: tu cuenta y tus partidas se conservan.</p>
   </div>
@@ -49,13 +49,14 @@
 
     <div class="notice" role="note">
       <strong>IMPORTANTE</strong>
+      <p><b>Escríbenos y yapea SOLO desde el número de celular que registraste en el juego.</b> Si escribes o yapeas desde otro número, tu recarga no será procesada hasta que te comuniques desde tu número registrado.</p>
       <p><b>Antes de yapear, escríbenos por WhatsApp y espera la autorización del administrador.</b> Los pagos sin autorización previa no se cargan automáticamente y su revisión o devolución puede demorar. Una vez autorizado, envía tu comprobante en un máximo de <b>5 minutos</b>; si pasa ese tiempo, la solicitud vence y deberás pedirla de nuevo.</p>
     </div>
 
     <div class="grid" style="margin-top:16px">
-      <div class="step"><div class="n">1</div><h3>Escríbenos</h3><p>Elige el monto y toca el botón verde: se abre WhatsApp con tu pedido ya escrito.</p></div>
+      <div class="step"><div class="n">1</div><h3>Escríbenos</h3><p>Desde tu número registrado, elige el monto y toca el botón verde: se abre WhatsApp con tu pedido ya escrito.</p></div>
       <div class="step"><div class="n">2</div><h3>Espera la autorización</h3><p>El administrador te responde y te pasa el número de Yape.</p></div>
-      <div class="step"><div class="n">3</div><h3>Yapea y envía la captura</h3><p>Manda tu comprobante por el mismo chat en un máximo de 5 minutos.</p></div>
+      <div class="step"><div class="n">3</div><h3>Yapea y envía la captura</h3><p>Yapea desde tu mismo número registrado y manda el comprobante por el mismo chat en un máximo de 5 minutos.</p></div>
       <div class="step"><div class="n">4</div><h3>¡Listo!</h3><p>Tus monedas aparecen en el juego en cuanto el administrador confirma el pago.</p></div>
     </div>
 
@@ -65,6 +66,9 @@
       <label class="f" for="pid">Tu ID de jugador</label>
       <input class="in" id="pid" inputmode="numeric" autocomplete="off" placeholder="Ejemplo: 10002">
       <div class="hint">Lo ves en el menú del juego, debajo de tu nombre.</div>
+      <label class="f" for="pphone">Tu celular registrado en el juego</label>
+      <input class="in" id="pphone" inputmode="tel" autocomplete="tel" placeholder="Ejemplo: 917 486 188">
+      <div class="hint">Debe ser el mismo número desde el que escribes y yapeas.</div>
       <label class="f" for="pname">Tu nombre de piloto (opcional)</label>
       <input class="in" id="pname" autocomplete="off" placeholder="Ejemplo: Roicer">
       <div class="err" id="werr"></div>
@@ -81,6 +85,8 @@
   <div class="wrap">
     <h2>Preguntas frecuentes</h2>
     <details><summary>¿Cuántas monedas se apuestan en cada partida?</summary><p>Cada partida en línea apuesta <b>10 monedas</b>: el ganador suma 10 a su saldo y el perdedor pierde 10. Si alguien se desconecta o abandona, pierde la partida. Para jugar en línea necesitas al menos 10 monedas. El modo práctica es gratis.</p></details>
+    <details><summary>¿Puedo recargar desde otro número?</summary><p>No. Solo procesamos recargas cuando nos escribes por WhatsApp y yapeas desde el <b>mismo número de celular que registraste</b> en el juego. Si usas otro número, tu recarga no será procesada hasta que te comuniques desde tu número registrado. Si cambiaste de número, escríbenos para actualizarlo.</p></details>
+    <details><summary>¿Puedo tener dos cuentas?</summary><p>No. Cada correo y cada número de celular solo se pueden usar en una cuenta.</p></details>
     <details><summary>¿Las monedas se pueden cambiar por dinero?</summary><p>No. Las monedas son solo para jugar dentro de Rally Bet 3D y no tienen valor en dinero.</p></details>
     <details><summary>Yapeé sin esperar la autorización, ¿qué hago?</summary><p>Escríbenos por WhatsApp con tu ID y la captura del Yape. Revisaremos el pago; puede demorar.</p></details>
     <details><summary>Me pasé de los 5 minutos para enviar el comprobante</summary><p>La solicitud vence. Escríbenos de nuevo por WhatsApp para pedir una nueva autorización.</p></details>
@@ -125,12 +131,16 @@
 
   var pid = document.getElementById('pid'), pname = document.getElementById('pname'), err = document.getElementById('werr');
   pid.addEventListener('input', function () { err.textContent = ''; });
+  document.getElementById('pphone').addEventListener('input', function () { err.textContent = ''; });
   document.getElementById('wa').onclick = function () {
     var id = (pid.value || '').replace(/[^0-9]/g, '');
     if (id.length < 5) { err.textContent = 'Escribe tu ID de jugador (5 números o más, lo ves en el menú del juego).'; pid.focus(); return; }
+    var ph = (document.getElementById('pphone').value || '').replace(/[^0-9]/g, '');
+    if (ph.length === 11 && ph.indexOf('51') === 0) ph = ph.slice(2);
+    if (!/^9[0-9]{8}$/.test(ph)) { err.textContent = 'Escribe tu celular registrado (9 dígitos, empieza con 9).'; document.getElementById('pphone').focus(); return; }
     var name = (pname.value || '').trim().slice(0, 16);
     var msg = 'Hola, quiero recargar S/ ' + sel + ' (' + coins(sel) + ' monedas) en Rally Bet 3D. Mi ID es #' + id +
-              (name ? ' y mi usuario es ' + name : '') + '. ¿Me autorizas para yapear?';
+              (name ? ' y mi usuario es ' + name : '') + '. Mi celular registrado es +51 ' + ph.slice(0,3) + ' ' + ph.slice(3,6) + ' ' + ph.slice(6) + '. ¿Me autorizas para yapear?';
     window.location.href = 'https://wa.me/' + C.whatsappNumber + '?text=' + encodeURIComponent(msg);
   };
 })();
