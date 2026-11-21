@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rally Bet 3D — Carreras de rally 1 vs 1 en línea</title>
+<meta name="description" content="Descarga Rally Bet 3D para Android: carreras de rally 1 vs 1 en línea en las ruinas de Ancient City. Recarga monedas por WhatsApp y Yape.">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">RALLY <span>BET</span> 3D</a>
+    <nav class="nav"><a href="#descargar">Descargar</a><a href="#recargar">Recargar</a><a href="#preguntas">Preguntas</a><a href="privacidad.html">Privacidad</a></nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>RALLY <span>BET</span> 3D</h1>
+    <p class="lead">Carreras de rally 1 vs 1 en línea entre las ruinas de Ancient City. Derrapa, choca y gánale a tus amigos.</p>
+    <a class="btn" id="dl-top" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m6 11 6 6 6-6"/><path d="M4 21h16"/></svg>
+      DESCARGAR PARA ANDROID
+    </a>
+    <div class="meta" id="dl-meta">Gratis · Android 7 o superior · unos 36 MB</div>
+  </div>
+</div>
+
+<section id="descargar">
+  <div class="wrap">
+    <h2>Cómo instalarlo</h2>
+    <p class="sub">El juego no está en Google Play: se instala directo desde aquí.</p>
+    <div class="grid">
+      <div class="step"><div class="n">1</div><h3>Descarga</h3><p>Toca <b>Descargar para Android</b> desde tu celular. Si Chrome pregunta, toca <b>Descargar de todos modos</b>.</p></div>
+      <div class="step"><div class="n">2</div><h3>Abre el archivo</h3><p>Al terminar, toca la notificación o busca <b>RallyBet3D.apk</b> en la carpeta Descargas.</p></div>
+      <div class="step"><div class="n">3</div><h3>Permite la instalación</h3><p>Si aparece "por seguridad…", toca <b>Configuración</b> y activa <b>Permitir de esta fuente</b>. Luego vuelve e instala.</p></div>
+      <div class="step"><div class="n">4</div><h3>Crea tu cuenta</h3><p>Regístrate con tu correo. Tu <b>ID de jugador</b> (por ejemplo #10002) aparece en el menú.</p></div>
+    </div>
+    <p class="hint" style="margin-top:14px">¿Ya lo tienes? Instala la versión nueva encima: tu cuenta y tus partidas se conservan.</p>
+  </div>
+</section>
+
+<section id="recargar">
+  <div class="wrap">
+    <h2>Recargar monedas</h2>
+    <p class="sub">1 moneda = S/ 0,10. Las monedas son solo para jugar y no se cambian por dinero.</p>
+
+    <div class="notice" role="note">
+      <strong>IMPORTANTE</strong>
+      <p><b>Antes de yapear, escríbenos por WhatsApp y espera la autorización del administrador.</b> Los pagos sin autorización previa no se cargan automáticamente y su revisión o devolución puede demorar. Una vez autorizado, envía tu comprobante en un máximo de <b>5 minutos</b>; si pasa ese tiempo, la solicitud vence y deberás pedirla de nuevo.</p>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+      <div class="step"><div class="n">1</div><h3>Escríbenos</h3><p>Elige el monto y toca el botón verde: se abre WhatsApp con tu pedido ya escrito.</p></div>
+      <div class="step"><div class="n">2</div><h3>Espera la autorización</h3><p>El administrador te responde y te pasa el número de Yape.</p></div>
+      <div class="step"><div class="n">3</div><h3>Yapea y envía la captura</h3><p>Manda tu comprobante por el mismo chat en un máximo de 5 minutos.</p></div>
+      <div class="step"><div class="n">4</div><h3>¡Listo!</h3><p>Tus monedas aparecen en el juego en cuanto el administrador confirma el pago.</p></div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <label class="f">¿Cuánto quieres recargar?</label>
+      <div class="amounts" id="amounts"></div>
+      <label class="f" for="pid">Tu ID de jugador</label>
+      <input class="in" id="pid" inputmode="numeric" autocomplete="off" placeholder="Ejemplo: 10002">
+      <div class="hint">Lo ves en el menú del juego, debajo de tu nombre.</div>
+      <label class="f" for="pname">Tu nombre de piloto (opcional)</label>
+      <input class="in" id="pname" autocomplete="off" placeholder="Ejemplo: Roicer">
+      <div class="err" id="werr"></div>
+      <button class="btn green" id="wa" type="button" style="margin-top:6px">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2.1.7 2.8.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+        <span id="wa-text">ESCRIBIR POR WHATSAPP</span>
+      </button>
+      <div class="hint" id="wa-num"></div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Las monedas se pueden cambiar por dinero?</summary><p>No. Las monedas son solo para jugar dentro de Rally Bet 3D y no tienen valor en dinero.</p></details>
+    <details><summary>Yapeé sin esperar la autorización, ¿qué hago?</summary><p>Escríbenos por WhatsApp con tu ID y la captura del Yape. Revisaremos el pago; puede demorar.</p></details>
+    <details><summary>Me pasé de los 5 minutos para enviar el comprobante</summary><p>La solicitud vence. Escríbenos de nuevo por WhatsApp para pedir una nueva autorización.</p></details>
+    <details><summary>¿Dónde veo mi ID de jugador?</summary><p>En el menú principal del juego, en la tarjeta con tu nombre, y en la pantalla <b>Recargar monedas</b>.</p></details>
+    <details><summary>Quiero borrar mi cuenta</summary><p>Escríbenos por WhatsApp desde tu número indicando tu ID. Borraremos tu cuenta y tus datos.</p></details>
+    <details><summary>Mi celular dice que la app puede ser dañina</summary><p>Aparece porque el juego no viene de Google Play. Descárgalo solo desde esta página oficial.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Rally Bet 3D · <a href="privacidad.html">Privacidad y condiciones de recarga</a> · Música, cielo y texturas de dominio público (CC0) ·
+    <a href="admin/">Administración</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var C = window.RALLY;
+  var dlTop = document.getElementById('dl-top');
+  dlTop.href = C.apkUrl;
+  document.getElementById('dl-meta').textContent = 'Gratis · Android 7 o superior · versión ' + C.apkVersion + ' · unos 36 MB';
+  document.getElementById('wa-num').textContent = 'WhatsApp del administrador: ' + C.whatsappDisplay;
+
+  var sel = 5;
+  var box = document.getElementById('amounts');
+  function coins(s) { return Math.round(s / C.solesPerCoin); }
+  function render() {
+    box.innerHTML = '';
+    C.amounts.forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'amount' + (s === sel ? ' sel' : '');
+      b.innerHTML = 'S/ ' + s + '<small>' + coins(s) + ' monedas</small>';
+      b.setAttribute('aria-pressed', s === sel ? 'true' : 'false');
+      b.onclick = function () { sel = s; render(); };
+      box.appendChild(b);
+    });
+    document.getElementById('wa-text').textContent = 'ESCRIBIR POR WHATSAPP (S/ ' + sel + ')';
+  }
+  render();
+
+  var pid = document.getElementById('pid'), pname = document.getElementById('pname'), err = document.getElementById('werr');
+  pid.addEventListener('input', function () { err.textContent = ''; });
+  document.getElementById('wa').onclick = function () {
+    var id = (pid.value || '').replace(/[^0-9]/g, '');
+    if (id.length < 5) { err.textContent = 'Escribe tu ID de jugador (5 números o más, lo ves en el menú del juego).'; pid.focus(); return; }
+    var name = (pname.value || '').trim().slice(0, 16);
+    var msg = 'Hola, quiero recargar S/ ' + sel + ' (' + coins(sel) + ' monedas) en Rally Bet 3D. Mi ID es #' + id +
+              (name ? ' y mi usuario es ' + name : '') + '. ¿Me autorizas para yapear?';
+    window.location.href = 'https://wa.me/' + C.whatsappNumber + '?text=' + encodeURIComponent(msg);
+  };
+})();
+</script>
+</body>
+</html>

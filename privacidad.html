@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacidad y condiciones de recarga — Rally Bet 3D</title>
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">RALLY <span>BET</span> 3D</a><nav class="nav"><a href="index.html#descargar">Descargar</a><a href="index.html#recargar">Recargar</a></nav></div></header>
+<main class="wrap legal" style="padding-top:24px;padding-bottom:20px">
+  <h1>Privacidad y condiciones de recarga</h1>
+  <p class="hint">Última actualización: 21 de noviembre de 2026.</p>
+
+  <h2>1. Quién es responsable de tus datos</h2>
+  <p>Responsable: <b id="resp"></b>. Contacto: WhatsApp <span class="wa"></span><span id="mail"></span>.</p>
+
+  <h2>2. Qué datos guardamos</h2>
+  <ul>
+    <li><b>Cuenta:</b> correo electrónico y contraseña (la contraseña se guarda cifrada; nadie puede verla).</li>
+    <li><b>Juego:</b> nombre de piloto, ID de jugador, puntos, victorias, derrotas, partidas jugadas y mejor tiempo.</li>
+    <li><b>Monedas y recargas:</b> saldo de monedas e historial de recargas (fecha, monto, monedas y, si lo das, el número de operación del Yape).</li>
+    <li><b>WhatsApp:</b> los mensajes y capturas que nos envías para recargar.</li>
+  </ul>
+  <p>No pedimos tu DNI, tu dirección ni datos de tarjetas. Los pagos por Yape se hacen fuera del juego.</p>
+
+  <h2>3. Para qué los usamos</h2>
+  <p>Para que puedas iniciar sesión, jugar en línea, aparecer en el ranking (solo tu nombre de piloto y tus estadísticas, nunca tu correo ni tu saldo), cargar tus monedas y atender tus consultas. No vendemos ni compartimos tus datos con terceros.</p>
+
+  <h2>4. Dónde se guardan</h2>
+  <p>En los servidores de Supabase, un servicio de base de datos en la nube que puede estar ubicado fuera del Perú. Al crear tu cuenta aceptas esta transferencia, necesaria para que el juego funcione.</p>
+
+  <h2>5. Tus derechos</h2>
+  <p>Puedes pedir ver, corregir o <b>borrar</b> tu cuenta y tus datos escribiéndonos por WhatsApp con tu ID de jugador. Lo atenderemos en un máximo de 10 días hábiles. Si no quedas conforme, puedes acudir a la Autoridad Nacional de Protección de Datos Personales (Ministerio de Justicia).</p>
+
+  <h2>6. Condiciones de recarga</h2>
+  <ul>
+    <li><b>1 moneda = S/ 0,10.</b> Las monedas son solo para jugar dentro de Rally Bet 3D, <b>no se cambian por dinero</b> y no se transfieren fuera del juego.</li>
+    <li><b>Antes de yapear, escríbenos por WhatsApp y espera la autorización del administrador.</b> Los pagos sin autorización previa no se cargan automáticamente y su revisión o devolución puede demorar.</li>
+    <li>Una vez autorizado, envía tu comprobante en un máximo de <b>5 minutos</b>; si pasa ese tiempo, la solicitud vence y deberás pedirla de nuevo.</li>
+    <li>Las monedas se cargan a la cuenta del <b>ID de jugador</b> que nos indiques. Revisa bien tu ID antes de pagar.</li>
+    <li>Si hubo un error en la carga, escríbenos con tu comprobante y lo corregiremos.</li>
+  </ul>
+
+  <h2>7. Edad</h2>
+  <p>Si eres menor de edad, usa el juego y realiza recargas con permiso de tus padres o tutores.</p>
+</main>
+<footer><div class="wrap"><a href="index.html">Volver al inicio</a></div></footer>
+<script>
+  var C = window.RALLY;
+  document.getElementById('resp').textContent = C.responsable;
+  document.querySelectorAll('.wa').forEach(function (e) { e.textContent = C.whatsappDisplay; });
+  if (C.contactoEmail) document.getElementById('mail').textContent = ' · correo ' + C.contactoEmail;
+</script>
+</body>
+</html>

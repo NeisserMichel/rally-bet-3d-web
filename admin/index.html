@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Administración — Rally Bet 3D</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  .hidden { display: none !important; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .stat .k { color: var(--muted); font-size: 14px; }
+  .stat .v { font-size: 26px; font-weight: 800; }
+  .stat .s { color: var(--muted); font-size: 13px; }
+  .row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .row > * { flex: 1 1 160px; }
+  .player { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); }
+  .player b { color: var(--yellow); }
+  .results button { display: block; width: 100%; text-align: left; background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+    border-radius: 10px; padding: 10px 12px; margin-top: 6px; font: 16px var(--font); cursor: pointer; }
+  .results button:hover { border-color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--panel); }
+  td.num { text-align: right; white-space: nowrap; }
+  tr.anulada td { color: #6f7785; text-decoration: line-through; }
+  tr.anulada td.act { text-decoration: none; }
+  .tablewrap { overflow-x: auto; max-height: 560px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+  .pill.ok { background: rgba(95,224,138,.16); color: var(--ok); }
+  .pill.an { background: rgba(255,107,97,.16); color: var(--danger); }
+  .confirm { margin-top: 12px; padding: 14px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(238,122,20,.12); }
+  .who { color: var(--muted); font-size: 14px; }
+  @media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+</style>
+<script src="../config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../index.html">RALLY <span>BET</span> 3D · Admin</a>
+  <div><span class="who" id="who"></span> <button class="btn small gray hidden" id="logout" type="button">Salir</button></div>
+</div></header>
+
+<main class="wrap" style="padding-top:22px;padding-bottom:30px">
+
+  <!-- Inicio de sesión -->
+  <div id="login" class="card hidden" style="max-width:440px;margin:30px auto">
+    <h2 style="margin-top:0">Iniciar sesión</h2>
+    <p class="hint">Usa el mismo correo y contraseña de tu cuenta del juego.</p>
+    <form id="loginForm">
+      <label class="f" for="email">Correo</label>
+      <input class="in" id="email" type="email" autocomplete="username" required>
+      <label class="f" for="pass">Contraseña</label>
+      <input class="in" id="pass" type="password" autocomplete="current-password" required>
+      <div class="err" id="loginErr"></div>
+      <button class="btn" type="submit" style="width:100%;margin-top:6px">ENTRAR</button>
+    </form>
+  </div>
+
+  <div id="notAdmin" class="card hidden" style="max-width:520px;margin:30px auto">
+    <h2 style="margin-top:0">Esta cuenta no es administradora</h2>
+    <p class="hint">Si es tu cuenta, revisa que tu correo esté en la última línea del archivo SQL 004 y vuelve a ejecutarlo en Supabase.</p>
+  </div>
+
+  <!-- Panel -->
+  <div id="panel" class="hidden">
+    <div class="stats" id="stats"></div>
+
+    <section style="padding:26px 0 10px">
+      <h2>Nueva recarga</h2>
+      <p class="sub">Solo después de confirmar que el Yape llegó a tu cuenta.</p>
+      <div class="card">
+        <div class="row">
+          <div><label class="f" for="q">ID de jugador o nombre</label><input class="in" id="q" autocomplete="off" placeholder="10002 o Roicer"></div>
+          <div style="flex:0 0 auto"><button class="btn gray" id="find" type="button">BUSCAR</button></div>
+        </div>
+        <div class="results" id="results"></div>
+        <div id="chosen" class="player hidden"></div>
+
+        <div id="form" class="hidden">
+          <label class="f">Monto recibido</label>
+          <div class="amounts" id="amounts"></div>
+          <div class="row">
+            <div><label class="f" for="soles">Otro monto (S/)</label><input class="in" id="soles" inputmode="decimal" placeholder="5.00"></div>
+            <div><label class="f" for="op">N.º de operación Yape (opcional)</label><input class="in" id="op" autocomplete="off" placeholder="Ej. 12345678"></div>
+          </div>
+          <label class="f" for="note">Nota (opcional)</label>
+          <input class="in" id="note" autocomplete="off" maxlength="120" placeholder="Ej. primera recarga, pagó su hermano…">
+          <div class="hint" id="preview"></div>
+          <div class="err" id="formErr"></div>
+          <button class="btn green" id="review" type="button" style="margin-top:6px">REVISAR Y CARGAR</button>
+          <div class="confirm hidden" id="confirm">
+            <div id="confirmText" style="font-weight:700"></div>
+            <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+              <button class="btn green" id="doIt" type="button">SÍ, CARGAR MONEDAS</button>
+              <button class="btn gray" id="cancel" type="button">CANCELAR</button>
+            </div>
+          </div>
+          <div class="okmsg" id="okMsg"></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:20px 0">
+      <h2>Historial de recargas</h2>
+      <div class="card">
+        <div class="row">
+          <div><label class="f" for="from">Desde</label><input class="in" id="from" type="date"></div>
+          <div><label class="f" for="to">Hasta</label><input class="in" id="to" type="date"></div>
+          <div><label class="f" for="fid">ID de jugador</label><input class="in" id="fid" inputmode="numeric" placeholder="Todos"></div>
+          <div style="flex:0 0 auto;display:flex;gap:8px">
+            <button class="btn gray" id="filter" type="button">FILTRAR</button>
+            <button class="btn gray" id="csv" type="button">CSV</button>
+          </div>
+        </div>
+        <div class="hint" id="totals" style="margin:10px 0"></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Fecha (Lima)</th><th>ID</th><th>Jugador</th><th class="num">S/</th><th class="num">Monedas</th><th>Yape / nota</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="err" id="histErr"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  var C = window.RALLY;
+  var sb = window.supabase.createClient(C.supabaseUrl, C.supabaseKey);
+  var $ = function (id) { return document.getElementById(id); };
+  var chosen = null, amount = 5, lastRows = [];
+
+  var ERR = {
+    NOT_ADMIN: 'Esta cuenta no es administradora.',
+    AMOUNT_INVALID: 'El monto debe ser mayor a 0 y como máximo S/ 1000.',
+    AMOUNT_NOT_MULTIPLE_OF_10_CENTS: 'El monto debe ser múltiplo de S/ 0,10 (por ejemplo 5 o 5.50).',
+    PLAYER_NOT_FOUND: 'No existe un jugador con ese ID.',
+    YAPE_OP_ALREADY_USED: 'Ese número de operación de Yape ya se usó en otra recarga.',
+    RECHARGE_NOT_FOUND: 'No se encontró la recarga.',
+    ALREADY_REVERSED: 'Esa recarga ya estaba anulada.',
+    NOT_ENOUGH_COINS: 'El jugador ya gastó esas monedas; no se puede anular por completo.'
+  };
+  function msg(e) {
+    var t = (e && (e.message || e.error_description)) || String(e);
+    for (var k in ERR) if (t.indexOf(k) >= 0) return ERR[k];
+    if (/Invalid login/i.test(t)) return 'Correo o contraseña incorrectos.';
+    if (/Email not confirmed/i.test(t)) return 'Primero confirma tu correo (revisa tu bandeja de entrada).';
+    if (/Could not find the function|PGRST202/i.test(t)) return 'Falta ejecutar el archivo SQL 004 en Supabase.';
+    if (/Failed to fetch|NetworkError/i.test(t)) return 'Sin conexión. Revisa tu internet.';
+    return t;
+  }
+  function soles(n) { return 'S/ ' + Number(n).toFixed(2); }
+  function coinsFor(s) { return Math.round(Number(s) / C.solesPerCoin); }
+  function limaDate(d) {
+    return new Date(d).toLocaleString('es-PE', { timeZone: 'America/Lima', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+  function todayLima() {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date());
+  }
+  function show(id) { ['login', 'notAdmin', 'panel'].forEach(function (x) { $(x).classList.toggle('hidden', x !== id); }); }
+
+  // ---------------------------------------------------------------- sesión
+  async function boot() {
+    var s = (await sb.auth.getSession()).data.session;
+    if (!s) { $('who').textContent = ''; $('logout').classList.add('hidden'); show('login'); return; }
+    $('who').textContent = s.user.email;
+    $('logout').classList.remove('hidden');
+    var r = await sb.rpc('am_i_admin');
+    if (r.error) { show('notAdmin'); $('notAdmin').querySelector('.hint').textContent = msg(r.error); return; }
+    if (!r.data) { show('notAdmin'); return; }
+    show('panel');
+    $('from').value = todayLima(); $('to').value = todayLima();
+    renderAmounts(); loadSummary(); loadHistory();
+  }
+  $('loginForm').onsubmit = async function (e) {
+    e.preventDefault();
+    $('loginErr').textContent = '';
+    var r = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('pass').value });
+    if (r.error) { $('loginErr').textContent = msg(r.error); return; }
+    $('pass').value = '';
+    boot();
+  };
+  $('logout').onclick = async function () { await sb.auth.signOut(); boot(); };
+
+  // ---------------------------------------------------------------- resumen
+  async function loadSummary() {
+    var r = await sb.rpc('admin_summary');
+    var box = $('stats'); box.innerHTML = '';
+    if (r.error) { box.textContent = msg(r.error); return; }
+    r.data.forEach(function (x) {
+      var d = document.createElement('div'); d.className = 'stat';
+      d.innerHTML = '<div class="k"></div><div class="v"></div><div class="s"></div>';
+      d.querySelector('.k').textContent = x.periodo;
+      d.querySelector('.v').textContent = soles(x.soles);
+      d.querySelector('.s').textContent = x.recargas + ' recargas · ' + x.monedas + ' monedas';
+      box.appendChild(d);
+    });
+  }
+
+  // ---------------------------------------------------------------- buscar jugador
+  async function find() {
+    var q = $('q').value.trim();
+    $('results').innerHTML = ''; $('formErr').textContent = '';
+    if (!q) return;
+    var r = await sb.rpc('admin_find_player', { p_query: q });
+    if (r.error) { $('results').textContent = msg(r.error); return; }
+    if (!r.data.length) { $('results').textContent = 'No se encontró ningún jugador.'; return; }
+    if (r.data.length === 1 && /^#?\d+$/.test(q)) { choose(r.data[0]); return; }
+    r.data.forEach(function (p) {
+      var b = document.createElement('button'); b.type = 'button';
+      b.textContent = '#' + p.player_number + ' · ' + p.username + ' · ' + p.coins + ' monedas';
+      b.onclick = function () { choose(p); };
+      $('results').appendChild(b);
+    });
+  }
+  function choose(p) {
+    chosen = p;
+    $('results').innerHTML = '';
+    var c = $('chosen'); c.classList.remove('hidden');
+    c.innerHTML = 'Jugador: <b></b> · ID <b></b> · saldo actual: <b></b> monedas';
+    var bs = c.querySelectorAll('b');
+    bs[0].textContent = p.username; bs[1].textContent = '#' + p.player_number; bs[2].textContent = p.coins;
+    $('form').classList.remove('hidden');
+    $('confirm').classList.add('hidden'); $('okMsg').textContent = '';
+    updatePreview();
+  }
+  $('find').onclick = find;
+  $('q').addEventListener('keydown', function (e) { if (e.key === 'Enter') find(); });
+
+  // ---------------------------------------------------------------- monto
+  function renderAmounts() {
+    var box = $('amounts'); box.innerHTML = '';
+    C.amounts.forEach(function (s) {
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'amount' + (s === amount && !$('soles').value ? ' sel' : '');
+      b.innerHTML = 'S/ ' + s + '<small>' + coinsFor(s) + ' monedas</small>';
+      b.onclick = function () { amount = s; $('soles').value = ''; renderAmounts(); updatePreview(); };
+      box.appendChild(b);
+    });
+  }
+  function currentAmount() {
+    var v = $('soles').value.replace(',', '.').trim();
+    return v ? Number(v) : amount;
+  }
+  function updatePreview() {
+    var a = currentAmount();
+    $('preview').textContent = isFinite(a) && a > 0 ? soles(a) + ' = ' + coinsFor(a) + ' monedas' : '';
+  }
+  $('soles').addEventListener('input', function () { renderAmounts(); updatePreview(); $('formErr').textContent = ''; });
+
+  // ---------------------------------------------------------------- cargar
+  $('review').onclick = function () {
+    $('formErr').textContent = ''; $('okMsg').textContent = '';
+    if (!chosen) { $('formErr').textContent = 'Primero busca y elige al jugador.'; return; }
+    var a = currentAmount();
+    if (!isFinite(a) || a <= 0) { $('formErr').textContent = 'Escribe un monto válido.'; return; }
+    if (Math.abs(a * 10 - Math.round(a * 10)) > 1e-6) { $('formErr').textContent = ERR.AMOUNT_NOT_MULTIPLE_OF_10_CENTS; return; }
+    $('confirmText').textContent = '¿Cargar ' + coinsFor(a) + ' monedas (' + soles(a) + ') a ' + chosen.username + ' (#' + chosen.player_number + ')?';
+    $('confirm').classList.remove('hidden');
+  };
+  $('cancel').onclick = function () { $('confirm').classList.add('hidden'); };
+  $('doIt').onclick = async function () {
+    var btn = $('doIt'); btn.disabled = true;
+    var a = currentAmount();
+    var r = await sb.rpc('admin_add_recharge', {
+      p_player_number: chosen.player_number, p_amount_soles: a,
+      p_yape_op: $('op').value.trim() || null, p_note: $('note').value.trim() || null
+    });
+    btn.disabled = false;
+    $('confirm').classList.add('hidden');
+    if (r.error) { $('formErr').textContent = msg(r.error); return; }
+    var x = r.data[0];
+    $('okMsg').textContent = 'Listo: ' + x.coins_added + ' monedas cargadas a ' + x.username + ' (#' + x.player_number + '). Nuevo saldo: ' + x.new_balance + ' monedas.';
+    chosen.coins = x.new_balance; choose(chosen);
+    $('okMsg').textContent = 'Listo: ' + x.coins_added + ' monedas cargadas a ' + x.username + ' (#' + x.player_number + '). Nuevo saldo: ' + x.new_balance + ' monedas.';
+    $('op').value = ''; $('note').value = '';
+    loadSummary(); loadHistory();
+  };
+
+  // ---------------------------------------------------------------- historial
+  async function loadHistory() {
+    $('histErr').textContent = '';
+    var fid = $('fid').value.replace(/[^0-9]/g, '');
+    var r = await sb.rpc('admin_list_recharges', {
+      p_from: $('from').value || null, p_to: $('to').value || null,
+      p_player_number: fid ? Number(fid) : null, p_limit: 1000
+    });
+    var tb = $('rows'); tb.innerHTML = '';
+    if (r.error) { $('histErr').textContent = msg(r.error); return; }
+    lastRows = r.data;
+    var tot = 0, cnt = 0, coinsTot = 0;
+    r.data.forEach(function (x) {
+      if (x.status === 'ok') { tot += Number(x.amount_soles); cnt++; coinsTot += x.coins; }
+      var tr = document.createElement('tr'); if (x.status !== 'ok') tr.className = 'anulada';
+      var cells = [limaDate(x.created_at), '#' + x.player_number, x.username, Number(x.amount_soles).toFixed(2), x.coins,
+                   [x.yape_op ? 'Op. ' + x.yape_op : '', x.note || '', x.reverse_reason ? 'Anulada: ' + x.reverse_reason : ''].filter(Boolean).join(' · ')];
+      cells.forEach(function (v, i) { var td = document.createElement('td'); if (i === 3 || i === 4) td.className = 'num'; td.textContent = v; tr.appendChild(td); });
+      var st = document.createElement('td');
+      st.innerHTML = x.status === 'ok' ? '<span class="pill ok">OK</span>' : '<span class="pill an">Anulada</span>';
+      tr.appendChild(st);
+      var act = document.createElement('td'); act.className = 'act';
+      if (x.status === 'ok') {
+        var b = document.createElement('button'); b.className = 'btn small danger'; b.type = 'button'; b.textContent = 'Anular';
+        b.onclick = function () { reverse(x, b); };
+        act.appendChild(b);
+      }
+      tr.appendChild(act);
+      tb.appendChild(tr);
+    });
+    $('totals').textContent = cnt + ' recargas válidas · ' + soles(tot) + ' · ' + coinsTot + ' monedas';
+    if (!r.data.length) $('totals').textContent = 'No hay recargas en ese rango.';
+  }
+  async function reverse(x, btn) {
+    var reason = window.prompt('¿Anular la recarga de ' + soles(x.amount_soles) + ' a ' + x.username + ' (#' + x.player_number + ')?\nEscribe el motivo:', 'Error al cargar');
+    if (reason === null) return;
+    btn.disabled = true;
+    var r = await sb.rpc('admin_reverse_recharge', { p_recharge_id: x.id, p_reason: reason });
+    if (r.error) { $('histErr').textContent = msg(r.error); btn.disabled = false; return; }
+    loadSummary(); loadHistory();
+  }
+  $('filter').onclick = loadHistory;
+  $('csv').onclick = function () {
+    var head = ['fecha_lima', 'id_jugador', 'jugador', 'soles', 'monedas', 'operacion_yape', 'nota', 'estado', 'admin', 'motivo_anulacion'];
+    var lines = [head.join(',')];
+    lastRows.forEach(function (x) {
+      lines.push([limaDate(x.created_at), x.player_number, x.username, Number(x.amount_soles).toFixed(2), x.coins, x.yape_op || '', x.note || '',
+                  x.status, x.admin_email || '', x.reverse_reason || ''].map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','));
+    });
+    var blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'recargas_' + ($('from').value || 'todo') + '_' + ($('to').value || '') + '.csv'; a.click();
+  };
+
+  boot();
+})();
+</script>
+</body>
+</html>

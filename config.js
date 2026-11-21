@@ -1,0 +1,21 @@
+// Configuración de la página de Rally Bet 3D.
+// La clave "publishable" es pública por diseño (ya va dentro del juego); la seguridad real
+// está en la base de datos: solo los administradores pueden cargar monedas.
+window.RALLY = {
+  supabaseUrl: "https://xswvzzrxvfmleltmyhnk.supabase.co",
+  supabaseKey: "sb_publishable_9q0LPhg82vM-o_HBrm8qNA_SrLhPnOa",
+
+  whatsappNumber: "51917486188",
+  whatsappDisplay: "+51 917 486 188",
+
+  // Enlace fijo al último APK publicado en este mismo repositorio (Releases)
+  apkUrl: "https://github.com/NeisserMichel/rally-bet-3d-web/releases/latest/download/RallyBet3D.apk",
+  apkVersion: "1.2.0",
+
+  solesPerCoin: 0.10,
+  amounts: [3, 5, 10, 20],
+
+  // Responsable del tratamiento de datos (Ley 29733). Completar con datos reales.
+  responsable: "Por completar (nombre o razón social y RUC)",
+  contactoEmail: ""
+};
