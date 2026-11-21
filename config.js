@@ -10,7 +10,7 @@ window.RALLY = {
 
   // El APK está en la raíz de esta misma página (se reemplaza en cada versión nueva)
   apkUrl: "RallyBet3D.apk",
-  apkVersion: "1.3.0",
+  apkVersion: "1.3.1",
 
   solesPerCoin: 0.10,
   amounts: [3, 5, 10, 20],
