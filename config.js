@@ -8,8 +8,8 @@ window.RALLY = {
   whatsappNumber: "51917486188",
   whatsappDisplay: "+51 917 486 188",
 
-  // Enlace fijo al último APK publicado en este mismo repositorio (Releases)
-  apkUrl: "https://github.com/NeisserMichel/rally-bet-3d-web/releases/latest/download/RallyBet3D.apk",
+  // El APK está en la raíz de esta misma página (se reemplaza en cada versión nueva)
+  apkUrl: "RallyBet3D.apk",
   apkVersion: "1.2.0",
 
   solesPerCoin: 0.10,
