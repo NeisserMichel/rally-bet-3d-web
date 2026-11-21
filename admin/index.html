@@ -103,6 +103,48 @@
       </div>
     </section>
 
+    <section style="padding:20px 0 10px">
+      <h2>Restar monedas</h2>
+      <p class="sub">Para fraudes o errores. El motivo queda guardado en el registro de movimientos.</p>
+      <div class="card">
+        <div class="row">
+          <div><label class="f" for="dId">ID de jugador</label><input class="in" id="dId" inputmode="numeric" autocomplete="off" placeholder="10002"></div>
+          <div><label class="f" for="dCoins">Monedas a restar</label><input class="in" id="dCoins" inputmode="numeric" autocomplete="off" placeholder="50"></div>
+        </div>
+        <label class="f" for="dReason">Motivo (obligatorio)</label>
+        <input class="in" id="dReason" autocomplete="off" maxlength="160" placeholder="Ej. recarga fraudulenta, monedas cargadas por error…">
+        <div class="hint" id="dInfo"></div>
+        <div class="err" id="dErr"></div>
+        <button class="btn danger" id="dReview" type="button" style="margin-top:6px;padding:15px 26px;font-size:17px">REVISAR Y RESTAR</button>
+        <div class="confirm hidden" id="dConfirm" style="border-color:var(--danger);background:rgba(255,107,97,.10)">
+          <div id="dConfirmText" style="font-weight:700"></div>
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn danger" id="dDo" type="button" style="padding:15px 26px;font-size:17px">SÍ, RESTAR MONEDAS</button>
+            <button class="btn gray" id="dCancel" type="button">CANCELAR</button>
+          </div>
+        </div>
+        <div class="okmsg" id="dOk"></div>
+      </div>
+    </section>
+
+    <section style="padding:20px 0 10px">
+      <h2>Movimientos de monedas</h2>
+      <p class="sub">Recargas, apuestas ganadas y perdidas, anulaciones y descuentos.</p>
+      <div class="card">
+        <div class="row">
+          <div><label class="f" for="mId">ID de jugador</label><input class="in" id="mId" inputmode="numeric" placeholder="Todos"></div>
+          <div style="flex:0 0 auto"><button class="btn gray" id="mLoad" type="button">VER MOVIMIENTOS</button></div>
+        </div>
+        <div class="tablewrap" style="margin-top:12px">
+          <table>
+            <thead><tr><th>Fecha (Lima)</th><th>ID</th><th>Jugador</th><th>Tipo</th><th class="num">Monedas</th><th class="num">Saldo</th><th>Detalle</th></tr></thead>
+            <tbody id="mRows"></tbody>
+          </table>
+        </div>
+        <div class="err" id="mErr"></div>
+      </div>
+    </section>
+
     <section style="padding:20px 0">
       <h2>Historial de recargas</h2>
       <div class="card">
@@ -143,7 +185,9 @@
     YAPE_OP_ALREADY_USED: 'Ese número de operación de Yape ya se usó en otra recarga.',
     RECHARGE_NOT_FOUND: 'No se encontró la recarga.',
     ALREADY_REVERSED: 'Esa recarga ya estaba anulada.',
-    NOT_ENOUGH_COINS: 'El jugador ya gastó esas monedas; no se puede anular por completo.'
+    NOT_ENOUGH_COINS: 'El jugador ya gastó esas monedas; no se puede anular por completo. Usa "Restar monedas" para quitarle lo que le quede.',
+    COINS_INVALID: 'Escribe una cantidad de monedas válida (mayor a 0).',
+    REASON_REQUIRED: 'Escribe el motivo del descuento.'
   };
   function msg(e) {
     var t = (e && (e.message || e.error_description)) || String(e);
@@ -175,7 +219,7 @@
     if (!r.data) { show('notAdmin'); return; }
     show('panel');
     $('from').value = todayLima(); $('to').value = todayLima();
-    renderAmounts(); loadSummary(); loadHistory();
+    renderAmounts(); loadSummary(); loadHistory(); loadMovements();
   }
   $('loginForm').onsubmit = async function (e) {
     e.preventDefault();
@@ -279,7 +323,7 @@
     chosen.coins = x.new_balance; choose(chosen);
     $('okMsg').textContent = 'Listo: ' + x.coins_added + ' monedas cargadas a ' + x.username + ' (#' + x.player_number + '). Nuevo saldo: ' + x.new_balance + ' monedas.';
     $('op').value = ''; $('note').value = '';
-    loadSummary(); loadHistory();
+    loadSummary(); loadHistory(); loadMovements();
   };
 
   // ---------------------------------------------------------------- historial
@@ -321,7 +365,7 @@
     btn.disabled = true;
     var r = await sb.rpc('admin_reverse_recharge', { p_recharge_id: x.id, p_reason: reason });
     if (r.error) { $('histErr').textContent = msg(r.error); btn.disabled = false; return; }
-    loadSummary(); loadHistory();
+    loadSummary(); loadHistory(); loadMovements();
   }
   $('filter').onclick = loadHistory;
   $('csv').onclick = function () {
@@ -335,6 +379,75 @@
     var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
     a.download = 'recargas_' + ($('from').value || 'todo') + '_' + ($('to').value || '') + '.csv'; a.click();
   };
+
+  // ---------------------------------------------------------------- restar monedas
+  var dTarget = null;
+  async function dLookup() {
+    var id = $('dId').value.replace(/[^0-9]/g, '');
+    dTarget = null; $('dInfo').textContent = '';
+    if (id.length < 5) return null;
+    var r = await sb.rpc('admin_find_player', { p_query: id });
+    if (r.error) { $('dErr').textContent = msg(r.error); return null; }
+    var p = (r.data || []).filter(function (x) { return String(x.player_number) === id; })[0];
+    if (!p) { $('dInfo').textContent = 'No existe un jugador con ese ID.'; return null; }
+    dTarget = p;
+    $('dInfo').textContent = 'Jugador: ' + p.username + ' (#' + p.player_number + ') · saldo actual: ' + p.coins + ' monedas';
+    return p;
+  }
+  $('dId').addEventListener('change', dLookup);
+  $('dId').addEventListener('input', function () { $('dErr').textContent = ''; $('dOk').textContent = ''; $('dConfirm').classList.add('hidden'); });
+  $('dReview').onclick = async function () {
+    $('dErr').textContent = ''; $('dOk').textContent = '';
+    var p = await dLookup();
+    if (!p) { if (!$('dErr').textContent) $('dErr').textContent = 'Escribe un ID de jugador válido.'; return; }
+    var n = parseInt($('dCoins').value.replace(/[^0-9]/g, ''), 10);
+    if (!n || n <= 0) { $('dErr').textContent = ERR.COINS_INVALID; return; }
+    if (!$('dReason').value.trim()) { $('dErr').textContent = ERR.REASON_REQUIRED; return; }
+    var real = Math.min(n, Number(p.coins));
+    $('dConfirmText').textContent = '¿Restar ' + real + ' monedas a ' + p.username + ' (#' + p.player_number + ')? Quedará con ' + (Number(p.coins) - real) + ' monedas.' +
+      (real < n ? ' (Pediste ' + n + ', pero solo tiene ' + p.coins + '.)' : '');
+    $('dConfirm').classList.remove('hidden');
+  };
+  $('dCancel').onclick = function () { $('dConfirm').classList.add('hidden'); };
+  $('dDo').onclick = async function () {
+    var btn = $('dDo'); btn.disabled = true;
+    var r = await sb.rpc('admin_deduct_coins', {
+      p_player_number: dTarget.player_number,
+      p_coins: parseInt($('dCoins').value.replace(/[^0-9]/g, ''), 10),
+      p_reason: $('dReason').value.trim()
+    });
+    btn.disabled = false; $('dConfirm').classList.add('hidden');
+    if (r.error) { $('dErr').textContent = msg(r.error); return; }
+    var x = r.data[0];
+    $('dOk').textContent = 'Listo: se restaron ' + x.coins_removed + ' monedas a ' + x.username + ' (#' + x.player_number + '). Nuevo saldo: ' + x.new_balance + ' monedas.';
+    $('dCoins').value = ''; $('dReason').value = '';
+    dLookup(); $('mId').value = String(x.player_number); loadMovements();
+  };
+
+  // ---------------------------------------------------------------- movimientos
+  var KIND = { recarga: 'Recarga', anulacion: 'Recarga anulada', apuesta_ganada: 'Partida ganada', apuesta_perdida: 'Partida perdida', descuento_admin: 'Descuento (admin)' };
+  async function loadMovements() {
+    $('mErr').textContent = '';
+    var id = $('mId').value.replace(/[^0-9]/g, '');
+    var r = await sb.rpc('admin_list_movements', { p_player_number: id ? Number(id) : null, p_limit: 500 });
+    var tb = $('mRows'); tb.innerHTML = '';
+    if (r.error) { $('mErr').textContent = msg(r.error); return; }
+    if (!r.data.length) { $('mErr').textContent = 'No hay movimientos.'; return; }
+    r.data.forEach(function (x) {
+      var tr = document.createElement('tr');
+      var detail = [x.rival ? 'vs ' + x.rival : '', x.reason || ''].filter(Boolean).join(' · ');
+      var cells = [limaDate(x.created_at), '#' + x.player_number, x.username, KIND[x.kind] || x.kind,
+                   (x.delta > 0 ? '+' : '') + x.delta, x.balance_after == null ? '—' : x.balance_after, detail];
+      cells.forEach(function (v, i) {
+        var td = document.createElement('td'); td.textContent = v;
+        if (i === 4 || i === 5) td.className = 'num';
+        if (i === 4) td.style.color = x.delta > 0 ? 'var(--ok)' : (x.delta < 0 ? 'var(--danger)' : '');
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  }
+  $('mLoad').onclick = loadMovements;
 
   boot();
 })();
