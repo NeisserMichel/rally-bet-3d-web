@@ -33,6 +33,13 @@
   .confirm { margin-top: 12px; padding: 14px; border-radius: 12px; border: 1px solid var(--accent); background: rgba(238,122,20,.12); }
   .who { color: var(--muted); font-size: 14px; }
   @media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+  .badge { display: inline-block; min-width: 26px; padding: 2px 9px; border-radius: 999px; background: var(--danger); color: #fff; font-size: 15px; font-weight: 800; text-align: center; vertical-align: middle; }
+  .badge.zero { background: rgba(255,255,255,.14); }
+  .sev { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+  .sev.alta { background: rgba(255,107,97,.22); color: var(--danger); }
+  .sev.media { background: rgba(255,196,0,.18); color: #ffd25c; }
+  .sev.baja { background: rgba(255,255,255,.10); color: var(--muted); }
+  tr.done td { opacity: .5; }
 </style>
 <script src="../config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -67,6 +74,35 @@
   <!-- Panel -->
   <div id="panel" class="hidden">
     <div class="stats" id="stats"></div>
+
+    <section style="padding:26px 0 10px">
+      <h2>Alertas de posible fraude <span class="badge zero" id="aCount">0</span></h2>
+      <div class="card">
+        <div class="hint">El sistema avisa aquí cuando detecta algo raro: tiempos o velocidades imposibles en carrera, juego modificado,
+          varias cuentas en un mismo teléfono, saldos cambiados por fuera del sistema, muchas partidas entre los mismos jugadores, etc.
+          Revisa al jugador (botón "Ver") y, si hace falta, usa "Restar monedas". Luego marca la alerta como revisada.</div>
+        <div class="row" style="margin:10px 0">
+          <div style="flex:0 0 auto"><button class="btn gray" id="aScan" type="button">REVISAR AHORA</button></div>
+          <div style="flex:0 0 auto"><label style="display:flex;gap:8px;align-items:center;color:var(--muted)"><input type="checkbox" id="aAll"> Mostrar también las revisadas</label></div>
+        </div>
+        <div class="tablewrap" style="max-height:420px">
+          <table><thead><tr><th>Fecha</th><th>Nivel</th><th>ID</th><th>Jugador</th><th>Tipo</th><th>Detalle</th><th></th></tr></thead>
+            <tbody id="aRows"></tbody></table>
+        </div>
+        <div class="err" id="aErr"></div>
+      </div>
+    </section>
+
+    <section style="padding:10px 0 10px">
+      <h2>Versión del juego</h2>
+      <div class="card">
+        <div class="hint" id="vInfo">…</div>
+        <div class="row" style="margin-top:10px">
+          <div style="flex:0 0 auto"><button class="btn gray" id="vRequire" type="button">EXIGIR LA VERSIÓN DE LA PÁGINA</button></div>
+        </div>
+        <div class="okmsg" id="vOk"></div><div class="err" id="vErr"></div>
+      </div>
+    </section>
 
     <section style="padding:26px 0 10px">
       <h2>Nueva recarga</h2>
@@ -189,7 +225,8 @@
     PHONE_TAKEN: 'Ese celular ya está registrado en otra cuenta.',
     NOT_ENOUGH_COINS: 'El jugador ya gastó esas monedas; no se puede anular por completo. Usa "Restar monedas" para quitarle lo que le quede.',
     COINS_INVALID: 'Escribe una cantidad de monedas válida (mayor a 0).',
-    REASON_REQUIRED: 'Escribe el motivo del descuento.'
+    REASON_REQUIRED: 'Escribe el motivo del descuento.',
+    VERSION_INVALID: 'Número de versión no válido.'
   };
   function msg(e) {
     var t = (e && (e.message || e.error_description)) || String(e);
@@ -221,7 +258,7 @@
     if (!r.data) { show('notAdmin'); return; }
     show('panel');
     $('from').value = todayLima(); $('to').value = todayLima();
-    renderAmounts(); loadSummary(); loadHistory(); loadMovements();
+    renderAmounts(); loadSummary(); loadHistory(); loadMovements(); scanAndLoadAlerts(); loadVersion();
   }
   $('loginForm').onsubmit = async function (e) {
     e.preventDefault();
@@ -259,7 +296,8 @@
     if (r.data.length === 1 && /^#?\d+$/.test(q)) { choose(r.data[0]); return; }
     r.data.forEach(function (p) {
       var b = document.createElement('button'); b.type = 'button';
-      b.textContent = '#' + p.player_number + ' · ' + p.username + ' · ' + fmtPhone(p.phone) + ' · ' + p.coins + ' monedas';
+      b.textContent = '#' + p.player_number + ' · ' + p.username + ' · ' + fmtPhone(p.phone) + ' · ' + p.coins + ' monedas' +
+        (p.open_alerts ? ' · ⚠ ' + p.open_alerts + ' alerta(s)' : '');
       b.onclick = function () { choose(p); };
       $('results').appendChild(b);
     });
@@ -276,10 +314,15 @@
       '<div style="margin-top:6px;font-size:18px">Celular registrado: <b class="ph"></b> ' +
       '<a class="wa" target="_blank" rel="noopener" style="margin-left:8px">abrir su WhatsApp</a> ' +
       '<button type="button" class="btn small gray chg" style="margin-left:8px">Cambiar celular</button></div>' +
+      '<div style="margin-top:6px;font-size:15px;color:var(--muted)">Regalo: <b class="gift"></b> monedas · Auto: <b class="car"></b> · Alertas sin revisar: <b class="al"></b></div>' +
       '<div class="hint">Verifica que el WhatsApp y el Yape vengan de este número antes de cargar.</div>';
     var bs = c.querySelectorAll('b');
     bs[0].textContent = p.username; bs[1].textContent = '#' + p.player_number; bs[2].textContent = p.coins;
     c.querySelector('.ph').textContent = fmtPhone(p.phone);
+    c.querySelector('.gift').textContent = p.gift_coins == null ? '—' : p.gift_coins;
+    c.querySelector('.car').textContent = CARS[p.car] || p.car || '—';
+    c.querySelector('.al').textContent = p.open_alerts == null ? '—' : p.open_alerts;
+    c.querySelector('.al').style.color = p.open_alerts ? 'var(--danger)' : '';
     var wa = c.querySelector('.wa');
     if (p.phone) wa.href = 'https://wa.me/51' + p.phone; else wa.remove();
     c.querySelector('.chg').onclick = async function () {
@@ -447,7 +490,8 @@
   };
 
   // ---------------------------------------------------------------- movimientos
-  var KIND = { recarga: 'Recarga', anulacion: 'Recarga anulada', apuesta_ganada: 'Partida ganada', apuesta_perdida: 'Partida perdida', descuento_admin: 'Descuento (admin)' };
+  var KIND = { recarga: 'Recarga', anulacion: 'Recarga anulada', apuesta_ganada: 'Partida ganada', apuesta_perdida: 'Partida perdida', descuento_admin: 'Descuento (admin)',
+              regalo: 'Regalo de bienvenida (monedas de regalo)', regalo_usado: 'Partida con monedas de regalo', compra_auto: 'Compra de auto' };
   async function loadMovements() {
     $('mErr').textContent = '';
     var id = $('mId').value.replace(/[^0-9]/g, '');
@@ -470,6 +514,87 @@
     });
   }
   $('mLoad').onclick = loadMovements;
+
+  // ---------------------------------------------------------------- alertas de fraude
+  var CARS = { clasico: 'Clásico', halcon: 'Halcón', trueno: 'Trueno', leyenda: 'Leyenda' };
+  var AKIND = {
+    velocidad_imposible: 'Velocidad imposible en carrera', tiempo_imposible: 'Tiempo imposible',
+    meta_sin_recorrido: 'Meta sin recorrer el circuito', apk_modificado: 'Juego (APK) modificado',
+    varias_cuentas: 'Varias cuentas en un teléfono', regalo_repetido: 'Regalo pedido otra vez',
+    auto_no_comprado: 'Usar auto no comprado', saldo_inconsistente: 'Saldo cambiado por fuera',
+    posible_acuerdo: 'Posible acuerdo entre jugadores', racha_sospechosa: 'Racha de victorias rara',
+    recargas_frecuentes: 'Muchas recargas', ganancia_alta: 'Ganancia alta en apuestas',
+    'juego:reloj_acelerado': 'El juego detectó reloj acelerado', 'juego:velocidad_auto': 'El juego detectó velocidad rara',
+    'juego:auto_no_coincide': 'El juego detectó auto alterado'
+  };
+  async function loadAlerts() {
+    $('aErr').textContent = '';
+    var r = await sb.rpc('admin_list_alerts', { p_only_open: !$('aAll').checked, p_limit: 300 });
+    var tb = $('aRows'); tb.innerHTML = '';
+    if (r.error) { $('aErr').textContent = /admin_list_alerts|PGRST202/.test(r.error.message || '') ? 'Falta ejecutar el archivo SQL 010 en Supabase.' : msg(r.error); return; }
+    var open = 0;
+    r.data.forEach(function (a) {
+      if (!a.resolved) open++;
+      var tr = document.createElement('tr'); if (a.resolved) tr.className = 'done';
+      var cells = [limaDate(a.created_at), '', a.player_number ? '#' + a.player_number : '—', a.username || '—', AKIND[a.kind] || a.kind,
+                   (a.detail || '') + (a.note ? ' · Nota: ' + a.note : ''), ''];
+      cells.forEach(function (v, i) {
+        var td = document.createElement('td');
+        if (i === 1) { var sp = document.createElement('span'); sp.className = 'sev ' + a.severity; sp.textContent = a.severity; td.appendChild(sp); }
+        else if (i === 6) {
+          if (a.player_number) {
+            var see = document.createElement('button'); see.type = 'button'; see.className = 'btn small gray'; see.textContent = 'Ver';
+            see.onclick = function () { $('q').value = String(a.player_number); find(); $('q').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+            td.appendChild(see);
+          }
+          if (!a.resolved) {
+            var ok = document.createElement('button'); ok.type = 'button'; ok.className = 'btn small green'; ok.textContent = 'Revisada'; ok.style.marginLeft = '6px';
+            ok.onclick = async function () {
+              var note = window.prompt('Nota (opcional): ¿qué hiciste o qué encontraste?', '');
+              if (note === null) return;
+              var rr = await sb.rpc('admin_resolve_alert', { p_id: a.id, p_note: note });
+              if (rr.error) { $('aErr').textContent = msg(rr.error); return; }
+              loadAlerts();
+            };
+            td.appendChild(ok);
+          }
+        }
+        else td.textContent = v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    var c = await sb.rpc('admin_count_alerts');
+    var n = c.error ? open : c.data;
+    $('aCount').textContent = n; $('aCount').classList.toggle('zero', !n);
+    if (!r.data.length) $('aErr').textContent = 'No hay alertas. ¡Todo en orden!';
+  }
+  async function scanAndLoadAlerts() {
+    var r = await sb.rpc('admin_scan_fraud');
+    if (r.error && !/admin_scan_fraud|PGRST202/.test(r.error.message || '')) $('aErr').textContent = msg(r.error);
+    loadAlerts();
+  }
+  $('aScan').onclick = scanAndLoadAlerts;
+  $('aAll').onchange = loadAlerts;
+
+  // ---------------------------------------------------------------- versión mínima
+  async function loadVersion() {
+    $('vErr').textContent = ''; $('vOk').textContent = '';
+    var r = await sb.rpc('admin_get_config');
+    if (r.error) { $('vInfo').textContent = 'Falta ejecutar el archivo SQL 010 en Supabase.'; return; }
+    var min = r.data.min_version_code;
+    $('vInfo').textContent = 'La página ofrece la versión ' + C.apkVersion + ' (código ' + C.apkVersionCode + '). ' +
+      'El servidor exige como mínimo el código ' + min + '. ' +
+      (min >= C.apkVersionCode ? 'Todo al día: las versiones anteriores no pueden jugar en línea.'
+                               : 'Las versiones anteriores todavía pueden jugar en línea. Toca el botón para exigir la versión de la página.');
+    $('vRequire').disabled = min >= C.apkVersionCode;
+  }
+  $('vRequire').onclick = async function () {
+    if (!window.confirm('Desde ahora solo podrán jugar en línea quienes tengan la versión ' + C.apkVersion + '. ¿Continuar?')) return;
+    var r = await sb.rpc('admin_set_min_version', { p_code: C.apkVersionCode });
+    if (r.error) { $('vErr').textContent = msg(r.error); return; }
+    loadVersion(); $('vOk').textContent = 'Listo: se exige la versión ' + C.apkVersion + '.';
+  };
 
   boot();
 })();
