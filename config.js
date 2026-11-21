@@ -16,6 +16,6 @@ window.RALLY = {
   amounts: [3, 5, 10, 20],
 
   // Responsable del tratamiento de datos (Ley 29733). Completar con datos reales.
-  responsable: "Por completar (nombre o razón social y RUC)",
+  responsable: "Neisser Michel Calla Delgado (RUC 10759639524)",
   contactoEmail: ""
 };
