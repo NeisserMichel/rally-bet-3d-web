@@ -1,4 +1,4 @@
-// Configuración de la página de Rally Bet 3D.
+// Configuración de la página de TotalBetGames (antes Rally Bet 3D).
 // La clave "publishable" es pública por diseño (ya va dentro del juego); la seguridad real
 // está en la base de datos: solo los administradores pueden cargar monedas.
 window.RALLY = {
@@ -9,9 +9,9 @@ window.RALLY = {
   whatsappDisplay: "+51 917 486 188",
 
   // El APK está en la raíz de esta misma página (se reemplaza en cada versión nueva)
-  apkUrl: "RallyBet3D.apk",
-  apkVersion: "1.9.0",
-  apkVersionCode: 13,   // el mismo número que version.json y AppVersion.Code del juego
+  apkUrl: "TotalBetGames.apk",
+  apkVersion: "2.0.0",
+  apkVersionCode: 14,   // el mismo número que version.json y AppVersion.Code del juego
 
   solesPerCoin: 0.10,
   amounts: [3, 5, 10, 20],

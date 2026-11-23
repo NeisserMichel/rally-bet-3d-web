@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Administración — Rally Bet 3D</title>
+<title>Administración — TotalBetGames</title>
 <link rel="stylesheet" href="../styles.css">
 <style>
   .hidden { display: none !important; }
@@ -46,7 +46,7 @@
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="../index.html">RALLY <span>BET</span> 3D · Admin</a>
+  <a class="brand" href="../index.html">TOTAL<span>BET</span>GAMES · Admin</a>
   <div><span class="who" id="who"></span> <button class="btn small gray hidden" id="logout" type="button">Salir</button></div>
 </div></header>
 
@@ -101,6 +101,18 @@
           <div style="flex:0 0 auto"><button class="btn gray" id="vRequire" type="button">EXIGIR LA VERSIÓN DE LA PÁGINA</button></div>
         </div>
         <div class="okmsg" id="vOk"></div><div class="err" id="vErr"></div>
+      </div>
+    </section>
+
+    <section style="padding:10px 0 10px">
+      <h2>Opiniones de la página</h2>
+      <div class="card">
+        <div class="hint">Estrellas y comentarios que dejan los jugadores en la página. Puedes ocultar un comentario ofensivo (deja de verse y de contar en el promedio).</div>
+        <div class="tablewrap" style="max-height:360px;margin-top:10px">
+          <table><thead><tr><th>Fecha</th><th>ID</th><th>Jugador</th><th>Estrellas</th><th>Comentario</th><th></th></tr></thead>
+            <tbody id="rRows"></tbody></table>
+        </div>
+        <div class="err" id="rErr"></div>
       </div>
     </section>
 
@@ -258,7 +270,7 @@
     if (!r.data) { show('notAdmin'); return; }
     show('panel');
     $('from').value = todayLima(); $('to').value = todayLima();
-    renderAmounts(); loadSummary(); loadHistory(); loadMovements(); scanAndLoadAlerts(); loadVersion();
+    renderAmounts(); loadSummary(); loadHistory(); loadMovements(); scanAndLoadAlerts(); loadVersion(); loadReviews();
   }
   $('loginForm').onsubmit = async function (e) {
     e.preventDefault();
@@ -525,7 +537,7 @@
     posible_acuerdo: 'Posible acuerdo entre jugadores', racha_sospechosa: 'Racha de victorias rara',
     recargas_frecuentes: 'Muchas recargas', ganancia_alta: 'Ganancia alta en apuestas',
     'juego:reloj_acelerado': 'El juego detectó reloj acelerado', 'juego:velocidad_auto': 'El juego detectó velocidad rara',
-    'juego:auto_no_coincide': 'El juego detectó auto alterado'
+    'juego:auto_no_coincide': 'El juego detectó auto alterado', jugada_ilegal: 'Ajedrez: envió una jugada ilegal'
   };
   async function loadAlerts() {
     $('aErr').textContent = '';
@@ -595,6 +607,32 @@
     if (r.error) { $('vErr').textContent = msg(r.error); return; }
     loadVersion(); $('vOk').textContent = 'Listo: se exige la versión ' + C.apkVersion + '.';
   };
+
+  // ---------------------------------------------------------------- opiniones de la página
+  function renderReviews(list) {
+    var tb = $('rRows'); tb.innerHTML = '';
+    (list || []).forEach(function (x) {
+      var tr = document.createElement('tr'); if (x.hidden) tr.className = 'done';
+      [limaDate(x.date), '#' + x.player_number, x.name, '★'.repeat(x.stars) + ' (' + x.stars + ')', x.comment || '—'].forEach(function (v) {
+        var td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
+      });
+      var td = document.createElement('td');
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'btn small ' + (x.hidden ? 'green' : 'gray');
+      b.textContent = x.hidden ? 'Mostrar' : 'Ocultar';
+      b.onclick = async function () {
+        var r = await sb.rpc('admin_hide_review', { p_player_number: x.player_number, p_hidden: !x.hidden });
+        if (r.error) { $('rErr').textContent = msg(r.error); return; }
+        renderReviews(r.data);
+      };
+      td.appendChild(b); tr.appendChild(td); tb.appendChild(tr);
+    });
+    $('rErr').textContent = (list || []).length ? '' : 'Todavía no hay opiniones.';
+  }
+  async function loadReviews() {
+    var r = await sb.rpc('admin_list_reviews', { p_limit: 300 });
+    if (r.error) { $('rErr').textContent = /admin_list_reviews|PGRST202/.test(r.error.message || '') ? 'Falta ejecutar el archivo SQL 012 en Supabase.' : msg(r.error); return; }
+    renderReviews(r.data);
+  }
 
   boot();
 })();

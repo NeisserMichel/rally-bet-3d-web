@@ -78,7 +78,7 @@ section .sub { color: var(--muted); margin: 0 0 22px; }
 .amount small { display: block; color: var(--muted); font-weight: 500; font-size: 13px; }
 .amount.sel { border-color: var(--accent); background: rgba(238,122,20,.16); }
 label.f { display: block; font-weight: 700; margin: 12px 0 6px; }
-input.in, select.in { width: 100%; background: #0c0f14; border: 1px solid var(--line); color: var(--text); font: 17px var(--font);
+input.in, select.in, textarea.in { width: 100%; background: #0c0f14; border: 1px solid var(--line); color: var(--text); font: 17px var(--font);
   border-radius: 10px; padding: 12px 14px; box-shadow: inset 0 2px 6px rgba(0,0,0,.45); }
 input.in:focus { outline: 2px solid var(--accent); border-color: transparent; }
 .hint { color: var(--muted); font-size: 14px; margin-top: 6px; }
@@ -100,4 +100,40 @@ footer a { color: var(--muted); }
   .hero .wrap { padding-top: 44px; }
   .btn { width: 100%; }
   .top .btn, .btn.small { width: auto; }
+}
+
+/* Juegos disponibles */
+.games { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.game { border-radius: 22px; padding: 18px 16px 20px; border: 6px solid #fff; color: #fff; min-height: 170px; }
+.game h3 { margin: 0 0 10px; font-size: 21px; letter-spacing: .5px; display: inline-block; padding-bottom: 6px; border-bottom: 5px solid currentColor; }
+.game p { margin: 0; font-size: 15px; line-height: 1.45; color: rgba(255,255,255,.92); }
+.g-race { background: #5e4036; } .g-race h3 { color: #ff7361; }
+.g-ludo { background: #0f99d9; } .g-ludo h3 { color: #1a244d; }
+.g-chess { background: #544073; } .g-chess h3 { color: #dbb8ff; }
+.g-soon { background: #383d4d; } .g-soon h3 { color: #bfc4d6; }
+
+/* Opiniones */
+.hidden { display: none !important; }
+.rev-grid { display: grid; grid-template-columns: 260px 1fr; gap: 14px; align-items: start; }
+.rev-summary { text-align: center; }
+.rev-avg { font-size: 58px; font-weight: 800; line-height: 1.1; }
+.stars { color: var(--yellow); letter-spacing: 2px; white-space: nowrap; }
+.stars.big { font-size: 28px; }
+.star-input { display: flex; gap: 6px; }
+.star { background: none; border: 0; padding: 2px 4px; font-size: 40px; line-height: 1; color: #4a5160; cursor: pointer; }
+.star.on { color: var(--yellow); }
+.star:focus-visible { outline: 2px solid var(--accent); border-radius: 8px; }
+textarea.in { resize: vertical; min-height: 62px; }
+#rvWords.over { color: var(--danger); font-weight: 700; }
+.okmsg { color: var(--ok); font-size: 15px; }
+.rev-list { margin-top: 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.rev { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; }
+.rev-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rev-date { color: var(--muted); font-size: 13px; margin-left: auto; }
+.rev p { margin: 6px 0 0; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .games { grid-template-columns: repeat(2, 1fr); }
+  .rev-grid, .rev-list { grid-template-columns: 1fr; }
+  .nav { gap: 11px; font-size: 13px; }
+  .brand { font-size: 16px; }
 }

@@ -3,23 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rally Bet 3D — Carreras de rally 1 vs 1 en línea</title>
-<meta name="description" content="Descarga Rally Bet 3D para Android: carreras de rally 1 vs 1 en línea en las ruinas de Ancient City. Recarga monedas por WhatsApp y Yape.">
+<title>TotalBetGames — Carreras, Ajedrez y Ludo 1 vs 1 en línea</title>
+<meta name="description" content="Descarga TotalBetGames para Android: carreras de rally 3D, ajedrez y ludo 1 vs 1 en línea con las mismas monedas. Recarga por WhatsApp y Yape.">
 <link rel="stylesheet" href="styles.css">
 <script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 </head>
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#">RALLY <span>BET</span> 3D</a>
-    <nav class="nav"><a href="#descargar">Descargar</a><a href="#recargar">Recargar</a><a href="#preguntas">Preguntas</a><a href="privacidad.html">Privacidad</a></nav>
+    <a class="brand" href="#">TOTAL<span>BET</span>GAMES</a>
+    <nav class="nav"><a href="#juegos">Juegos</a><a href="#descargar">Descargar</a><a href="#recargar">Recargar</a><a href="#opiniones">Opiniones</a><a href="#preguntas">Preguntas</a></nav>
   </div>
 </header>
 
 <div class="hero">
   <div class="wrap">
-    <h1>RALLY <span>BET</span> 3D</h1>
-    <p class="lead">Carreras de rally 1 vs 1 en línea. Mapas: ruinas de Ancient City, el Desierto, la Pista de asfalto y las Maravillas del mundo, sorteados en cada partida. Derrapa, choca y gánale a tus amigos.</p>
+    <h1>TOTAL<span>BET</span>GAMES</h1>
+    <p class="lead">Varios juegos 1 vs 1 en línea en una sola app: <b>Carreras de rally 3D</b>, <b>Ajedrez</b> y <b>Ludo</b>. Una sola cuenta y las mismas monedas para apostar en todos.</p>
     <a class="btn" id="dl-top" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m6 11 6 6 6-6"/><path d="M4 21h16"/></svg>
       DESCARGAR PARA ANDROID
@@ -28,24 +29,37 @@
   </div>
 </div>
 
+<section id="juegos">
+  <div class="wrap">
+    <h2>Juegos disponibles</h2>
+    <p class="sub">Al abrir la app eliges el juego. En todos apuestas 10 o 20 monedas contra otro jugador con la misma apuesta.</p>
+    <div class="games">
+      <div class="game g-race"><h3>CARRERAS</h3><p>Rally 3D en cuatro mapas sorteados. 10 monedas = 1 vuelta, 20 monedas = 2 vueltas. Se juega con el teléfono acostado.</p></div>
+      <div class="game g-ludo"><h3>LUDO</h3><p>El dado lo tira el servidor. 10 monedas = 2 fichas (rápido), 20 monedas = 4 fichas (clásico).</p></div>
+      <div class="game g-chess"><h3>AJEDREZ</h3><p>Con reloj y todas las reglas. 10 monedas = 5 minutos por jugador, 20 monedas = 10 minutos.</p></div>
+      <div class="game g-soon"><h3>MÁS JUEGOS</h3><p>Muy pronto.</p></div>
+    </div>
+  </div>
+</section>
+
 <section id="descargar">
   <div class="wrap">
     <h2>Cómo instalarlo</h2>
-    <p class="sub">El juego no está en Google Play: se instala directo desde aquí.</p>
+    <p class="sub">La app no está en Google Play: se instala directo desde aquí.</p>
     <div class="grid">
       <div class="step"><div class="n">1</div><h3>Descarga</h3><p>Toca <b>Descargar para Android</b> desde tu celular. Si Chrome pregunta, toca <b>Descargar de todos modos</b>.</p></div>
-      <div class="step"><div class="n">2</div><h3>Abre el archivo</h3><p>Al terminar, toca la notificación o busca <b>RallyBet3D.apk</b> en la carpeta Descargas.</p></div>
+      <div class="step"><div class="n">2</div><h3>Abre el archivo</h3><p>Al terminar, toca la notificación o busca <b>TotalBetGames.apk</b> en la carpeta Descargas.</p></div>
       <div class="step"><div class="n">3</div><h3>Permite la instalación</h3><p>Si aparece "por seguridad…", toca <b>Configuración</b> y activa <b>Permitir de esta fuente</b>. Luego vuelve e instala.</p></div>
-      <div class="step"><div class="n">4</div><h3>Crea tu cuenta</h3><p>Regístrate con tu correo y tu <b>celular de WhatsApp y Yape</b>. Tu <b>ID de jugador</b> (por ejemplo #10002) aparece en el menú.</p></div>
+      <div class="step"><div class="n">4</div><h3>Crea tu cuenta</h3><p>Regístrate con tu correo y tu <b>celular de WhatsApp y Yape</b>. Tu <b>ID de jugador</b> (por ejemplo #10002) aparece arriba, en la pantalla de juegos.</p></div>
     </div>
-    <p class="hint" style="margin-top:14px">¿Ya lo tienes? Instala la versión nueva encima: tu cuenta y tus partidas se conservan.</p>
+    <p class="hint" style="margin-top:14px">¿Ya tenías Rally Bet 3D? Es la misma app con nombre nuevo: instala esta versión encima y tu cuenta, monedas y autos se conservan.</p>
   </div>
 </section>
 
 <section id="recargar">
   <div class="wrap">
     <h2>Recargar monedas</h2>
-    <p class="sub">1 moneda = S/ 0,10. Cada partida en línea apuesta 10 monedas (ganador +10, perdedor −10). Las monedas son solo para jugar y no se cambian por dinero.</p>
+    <p class="sub">1 moneda = S/ 0,10. Las mismas monedas sirven en todos los juegos: cada partida en línea apuesta 10 o 20 monedas (el ganador las gana y el perdedor las pierde). Las monedas son solo para jugar y no se cambian por dinero.</p>
 
     <div class="notice" role="note">
       <strong>IMPORTANTE</strong>
@@ -65,11 +79,11 @@
       <div class="amounts" id="amounts"></div>
       <label class="f" for="pid">Tu ID de jugador</label>
       <input class="in" id="pid" inputmode="numeric" autocomplete="off" placeholder="Ejemplo: 10002">
-      <div class="hint">Lo ves en el menú del juego, debajo de tu nombre.</div>
+      <div class="hint">Lo ves arriba en la pantalla de juegos, junto a tu nombre.</div>
       <label class="f" for="pphone">Tu celular registrado en el juego</label>
       <input class="in" id="pphone" inputmode="tel" autocomplete="tel" placeholder="Ejemplo: 917 486 188">
       <div class="hint">Debe ser el mismo número desde el que escribes y yapeas.</div>
-      <label class="f" for="pname">Tu nombre de piloto (opcional)</label>
+      <label class="f" for="pname">Tu nombre de jugador (opcional)</label>
       <input class="in" id="pname" autocomplete="off" placeholder="Ejemplo: Roicer">
       <div class="err" id="werr"></div>
       <button class="btn green" id="wa" type="button" style="margin-top:6px">
@@ -81,31 +95,68 @@
   </div>
 </section>
 
+<section id="opiniones">
+  <div class="wrap">
+    <h2>Opiniones de los jugadores</h2>
+    <p class="sub">Califica la app de 1 a 5 estrellas y deja un comentario corto (máximo 20 palabras).</p>
+    <div class="rev-grid">
+      <div class="card rev-summary">
+        <div class="rev-avg" id="rvAvg">—</div>
+        <div class="stars big" id="rvAvgStars" aria-hidden="true"></div>
+        <div class="hint" id="rvCount">Cargando opiniones…</div>
+      </div>
+      <div class="card">
+        <label class="f" id="rvLabel">Tu calificación</label>
+        <div class="star-input" id="rvStars" role="radiogroup" aria-labelledby="rvLabel"></div>
+        <label class="f" for="rvText">Tu comentario (opcional)</label>
+        <textarea class="in" id="rvText" rows="2" maxlength="240" placeholder="Ejemplo: Me gusta jugar ajedrez con mis amigos"></textarea>
+        <div class="hint" id="rvWords">0 de 20 palabras</div>
+        <div id="rvLogin" class="hidden">
+          <div class="hint" style="margin-top:10px">Para opinar, entra con tu cuenta de TotalBetGames (la misma de la app). Una opinión por cuenta.</div>
+          <label class="f" for="rvEmail">Correo</label>
+          <input class="in" id="rvEmail" type="email" autocomplete="username" placeholder="tu@correo.com">
+          <label class="f" for="rvPass">Contraseña</label>
+          <input class="in" id="rvPass" type="password" autocomplete="current-password">
+        </div>
+        <div class="hint" id="rvWho"></div>
+        <div class="err" id="rvErr"></div>
+        <div class="okmsg" id="rvOk"></div>
+        <button class="btn" id="rvSend" type="button" style="margin-top:8px">ENVIAR MI OPINIÓN</button>
+      </div>
+    </div>
+    <div id="rvList" class="rev-list"></div>
+  </div>
+</section>
+
 <section id="preguntas">
   <div class="wrap">
     <h2>Preguntas frecuentes</h2>
-    <details><summary>¿En qué mapa se juega?</summary><p>En línea el mapa se sortea en cada partida y los dos jugadores corren en el mismo: Ancient City, el Desierto, la Pista o Maravillas del mundo (pasas junto a Machu Picchu, las Pirámides de Giza, el Coliseo, el Taj Mahal, la Gran Muralla China, Chichén Itzá y Petra). Si tu rival tiene una versión más antigua del juego, solo sale un mapa que tengan los dos. En el modo práctica puedes elegirlo.</p></details>
-    <details><summary>¿Cuántas monedas se apuestan en cada partida?</summary><p>Tú eliges: <b>10 monedas a 1 vuelta</b> o <b>20 monedas a 2 vueltas</b>. El ganador suma la apuesta y el perdedor la pierde. Si alguien se desconecta o abandona, pierde la partida. Necesitas al menos esa cantidad de monedas. El modo práctica es gratis.</p></details>
-    <details><summary>¿Con quién me emparejan?</summary><p>Solo con pilotos que eligieron <b>la misma apuesta</b> (10 o 20 monedas) y que usan <b>el mismo auto</b> que tú, tanto en partida rápida como en salas con código. Así la carrera es pareja. Cambia de auto en el GARAJE.</p></details>
+    <details><summary>¿Qué juegos hay y cómo elijo?</summary><p>Al abrir la app aparece la pantalla de juegos (con el teléfono parado): <b>Carreras</b>, <b>Ludo</b> y <b>Ajedrez</b>. Toca la tarjeta del juego que quieras. Carreras gira la pantalla a horizontal; Ludo y Ajedrez se juegan en vertical.</p></details>
+    <details><summary>¿Las monedas sirven para todos los juegos?</summary><p>Sí. Tienes un solo saldo de monedas y lo usas en cualquier juego. En todos eliges apostar <b>10</b> o <b>20 monedas</b> y solo juegas contra alguien con la misma apuesta.</p></details>
+    <details><summary>¿Cómo se juega el Ajedrez?</summary><p>Toca una pieza y luego la casilla de destino. Cada jugador tiene su reloj: <b>5 minutos</b> con apuesta de 10 monedas o <b>10 minutos</b> con 20. Gana quien da jaque mate, o si al rival se le acaba el tiempo, se rinde o se desconecta. Si hay tablas (empate) nadie gana ni pierde monedas.</p></details>
+    <details><summary>¿Cómo se juega el Ludo?</summary><p>Tocas el dado para tirar (lo tira el servidor, nadie puede alterarlo). Con <b>6</b> sacas una ficha y tiras otra vez. Si caes sobre una ficha rival fuera de una casilla segura, vuelve a su casa. Gana quien lleva todas sus fichas a la meta: <b>2 fichas</b> con apuesta de 10 monedas o <b>4 fichas</b> con 20. Tienes 30 segundos por turno; si dejas pasar 3 turnos pierdes.</p></details>
+    <details><summary>Carreras: ¿en qué mapa se juega?</summary><p>En línea el mapa se sortea en cada partida y los dos jugadores corren en el mismo: Ancient City, el Desierto, la Pista o Maravillas del mundo (pasas junto a Machu Picchu, las Pirámides de Giza, el Coliseo, el Taj Mahal, la Gran Muralla China, Chichén Itzá y Petra). Si tu rival tiene una versión más antigua del juego, solo sale un mapa que tengan los dos. En el modo práctica puedes elegirlo.</p></details>
+    <details><summary>Carreras: ¿cuántas monedas se apuestan?</summary><p>Tú eliges: <b>10 monedas a 1 vuelta</b> o <b>20 monedas a 2 vueltas</b>. El ganador suma la apuesta y el perdedor la pierde. Si alguien se desconecta o abandona, pierde la partida. Necesitas al menos esa cantidad de monedas. El modo práctica es gratis.</p></details>
+    <details><summary>Carreras: ¿con quién me emparejan?</summary><p>Solo con pilotos que eligieron <b>la misma apuesta</b> (10 o 20 monedas) y que usan <b>el mismo auto</b> que tú, tanto en partida rápida como en salas con código. Así la carrera es pareja. Cambia de auto en el GARAJE.</p></details>
     <details><summary>¿Los autos chocan entre sí?</summary><p>No. En línea el auto de tu rival es un <b>auto fantasma</b>: lo puedes atravesar sin choques ni empujones, y se vuelve transparente cuando está cerca. La largada es en una recta, así nadie sale con ventaja.</p></details>
-    <details><summary>¿Qué son las monedas de regalo?</summary><p>Cada jugador nuevo recibe <b>30 monedas de regalo</b> para probar el juego en línea (una sola vez por teléfono). Se usan primero y cada partida descuenta 10 de regalo <b>ganes o pierdas</b>; esas monedas no pasan a tu rival. Si tu rival juega con monedas de regalo, tus monedas no cambian. Las monedas de regalo no sirven para comprar autos.</p></details>
+    <details><summary>¿Qué son las monedas de regalo?</summary><p>Cada jugador nuevo recibe <b>30 monedas de regalo</b> para probar los juegos en línea (una sola vez por teléfono). Se usan primero y cada partida descuenta la apuesta de regalo <b>ganes o pierdas</b>; esas monedas no pasan a tu rival. Si tu rival juega con monedas de regalo, tus monedas no cambian. Las monedas de regalo no sirven para comprar autos.</p></details>
     <details><summary>¿Qué hay en el Garaje?</summary><p>Autos que se compran con monedas: <b>Halcón</b> (250 monedas, 85 km/h), <b>Trueno</b> (500, 90 km/h) y <b>Leyenda</b> (1000, 96 km/h). Son más rápidos y vistosos que el Clásico. Solo compites contra pilotos con el mismo auto.</p></details>
-    <details><summary>El juego me pide actualizar</summary><p>Cuando sale una versión nueva, el juego muestra un aviso con el botón <b>ACTUALIZAR</b> y no deja jugar hasta instalarla. Descarga el APK desde esta página y ábrelo: tus monedas, autos y récords se mantienen.</p></details>
-    <details><summary>¿Qué pasa si alguien hace trampa?</summary><p>El servidor revisa cada carrera (tiempos, velocidades, autos y recorrido) y avisa al administrador si algo es imposible. Las monedas obtenidas con trampas o juegos modificados se pueden retirar y la cuenta puede ser bloqueada.</p></details>
+    <details><summary>La app me pide actualizar</summary><p>Cuando sale una versión nueva, la app muestra un aviso con el botón <b>ACTUALIZAR</b> y no deja jugar hasta instalarla. Descarga el APK desde esta página y ábrelo: tus monedas, autos y récords se mantienen.</p></details>
+    <details><summary>¿Qué pasa si alguien hace trampa?</summary><p>El servidor revisa cada carrera (tiempos, velocidades, autos y recorrido), valida cada jugada de ajedrez, tira el dado del ludo y avisa al administrador si algo es imposible. Las monedas obtenidas con trampas o juegos modificados se pueden retirar y la cuenta puede ser bloqueada.</p></details>
     <details><summary>¿Puedo recargar desde otro número?</summary><p>No. Solo procesamos recargas cuando nos escribes por WhatsApp y yapeas desde el <b>mismo número de celular que registraste</b> en el juego. Si usas otro número, tu recarga no será procesada hasta que te comuniques desde tu número registrado. Si cambiaste de número, escríbenos para actualizarlo.</p></details>
     <details><summary>¿Puedo tener dos cuentas?</summary><p>No. Cada correo y cada número de celular solo se pueden usar en una cuenta.</p></details>
-    <details><summary>¿Las monedas se pueden cambiar por dinero?</summary><p>No. Las monedas son solo para jugar dentro de Rally Bet 3D y no tienen valor en dinero.</p></details>
+    <details><summary>¿Las monedas se pueden cambiar por dinero?</summary><p>No. Las monedas son solo para jugar dentro de TotalBetGames y no tienen valor en dinero.</p></details>
     <details><summary>Yapeé sin esperar la autorización, ¿qué hago?</summary><p>Escríbenos por WhatsApp con tu ID y la captura del Yape. Revisaremos el pago; puede demorar.</p></details>
     <details><summary>Me pasé de los 5 minutos para enviar el comprobante</summary><p>La solicitud vence. Escríbenos de nuevo por WhatsApp para pedir una nueva autorización.</p></details>
-    <details><summary>¿Dónde veo mi ID de jugador?</summary><p>En el menú principal del juego, en la tarjeta con tu nombre, y en la pantalla <b>Recargar monedas</b>.</p></details>
+    <details><summary>¿Dónde veo mi ID de jugador?</summary><p>En la pantalla de juegos, arriba junto a tu nombre, y en la pantalla <b>Recargar monedas</b>.</p></details>
     <details><summary>Quiero borrar mi cuenta</summary><p>Escríbenos por WhatsApp desde tu número indicando tu ID. Borraremos tu cuenta y tus datos.</p></details>
-    <details><summary>Mi celular dice que la app puede ser dañina</summary><p>Aparece porque el juego no viene de Google Play. Descárgalo solo desde esta página oficial.</p></details>
+    <details><summary>Mi celular dice que la app puede ser dañina</summary><p>Aparece porque la app no viene de Google Play. Descárgalo solo desde esta página oficial.</p></details>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    Rally Bet 3D · <a href="privacidad.html">Privacidad y condiciones de recarga</a> · Música, cielo y texturas de dominio público (CC0) ·
+    TotalBetGames · <a href="privacidad.html">Privacidad y condiciones de recarga</a> · Música, cielo y texturas de dominio público (CC0) ·
     <a href="admin/">Administración</a>
   </div>
 </footer>
@@ -141,16 +192,122 @@
   document.getElementById('pphone').addEventListener('input', function () { err.textContent = ''; });
   document.getElementById('wa').onclick = function () {
     var id = (pid.value || '').replace(/[^0-9]/g, '');
-    if (id.length < 5) { err.textContent = 'Escribe tu ID de jugador (5 números o más, lo ves en el menú del juego).'; pid.focus(); return; }
+    if (id.length < 5) { err.textContent = 'Escribe tu ID de jugador (5 números o más, lo ves en la pantalla de juegos).'; pid.focus(); return; }
     var ph = (document.getElementById('pphone').value || '').replace(/[^0-9]/g, '');
     if (ph.length === 11 && ph.indexOf('51') === 0) ph = ph.slice(2);
     if (!/^9[0-9]{8}$/.test(ph)) { err.textContent = 'Escribe tu celular registrado (9 dígitos, empieza con 9).'; document.getElementById('pphone').focus(); return; }
     var name = (pname.value || '').trim().slice(0, 16);
-    var msg = 'Hola, quiero recargar S/ ' + sel + ' (' + coins(sel) + ' monedas) en Rally Bet 3D. Mi ID es #' + id +
+    var msg = 'Hola, quiero recargar S/ ' + sel + ' (' + coins(sel) + ' monedas) en TotalBetGames. Mi ID es #' + id +
               (name ? ' y mi usuario es ' + name : '') + '. Mi celular registrado es +51 ' + ph.slice(0,3) + ' ' + ph.slice(3,6) + ' ' + ph.slice(6) + '. ¿Me autorizas para yapear?';
     window.location.href = 'https://wa.me/' + C.whatsappNumber + '?text=' + encodeURIComponent(msg);
   };
 })();
+
+// ---------------------------------------------------------------- Opiniones (estrellas y comentarios)
+window.addEventListener('DOMContentLoaded', function () {
+  var C = window.RALLY, $ = function (id) { return document.getElementById(id); };
+  var MAX_WORDS = 20;
+  if (!window.supabase) { $('rvCount').textContent = 'No se pudieron cargar las opiniones. Revisa tu conexión.'; return; }
+  var sb = window.supabase.createClient(C.supabaseUrl, C.supabaseKey);
+  var stars = 0, session = null;
+
+  function words(t) { t = (t || '').trim(); return t ? t.split(/\s+/).length : 0; }
+  function starText(n) { n = Math.round(n); return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n); }
+  function when(d) { try { return new Date(d).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
+  function fail(e) {
+    var m = (e && e.message) || '';
+    if (/REVIEW_TOO_LONG/.test(m)) return 'Tu comentario pasa de ' + MAX_WORDS + ' palabras.';
+    if (/REVIEW_STARS/.test(m)) return 'Elige de 1 a 5 estrellas.';
+    if (/Invalid login/i.test(m)) return 'Correo o contraseña incorrectos.';
+    if (/NOT_AUTHENTICATED|JWT/i.test(m)) return 'Tu sesión terminó. Escribe tu correo y contraseña.';
+    if (/submit_review|get_reviews|PGRST202/.test(m)) return 'Las opiniones estarán disponibles muy pronto.';
+    if (/fetch|network/i.test(m)) return 'Sin conexión. Intenta de nuevo.';
+    return 'No se pudo enviar. Intenta de nuevo.';
+  }
+
+  // Estrellas para elegir
+  var box = $('rvStars');
+  function drawStars() {
+    box.innerHTML = '';
+    for (var i = 1; i <= 5; i++) (function (n) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'star' + (n <= stars ? ' on' : '');
+      b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', n === stars ? 'true' : 'false');
+      b.setAttribute('aria-label', n + (n === 1 ? ' estrella' : ' estrellas'));
+      b.textContent = '★';
+      b.onclick = function () { stars = n; $('rvErr').textContent = ''; drawStars(); };
+      box.appendChild(b);
+    })(i);
+  }
+  drawStars();
+
+  var text = $('rvText');
+  function countWords() {
+    var n = words(text.value);
+    $('rvWords').textContent = n + ' de ' + MAX_WORDS + ' palabras';
+    $('rvWords').classList.toggle('over', n > MAX_WORDS);
+    return n;
+  }
+  text.addEventListener('input', function () { $('rvErr').textContent = ''; $('rvOk').textContent = ''; countWords(); });
+
+  function render(d) {
+    var n = Number(d.count || 0), avg = Number(d.average || 0);
+    $('rvAvg').textContent = n ? avg.toFixed(1) : '—';
+    $('rvAvgStars').textContent = n ? starText(avg) : '☆☆☆☆☆';
+    $('rvCount').textContent = n ? (n === 1 ? '1 opinión' : n + ' opiniones') : 'Todavía no hay opiniones. ¡Sé el primero!';
+    var list = $('rvList'); list.innerHTML = '';
+    (d.items || []).forEach(function (r) {
+      var el = document.createElement('div'); el.className = 'rev';
+      var head = document.createElement('div'); head.className = 'rev-head';
+      var who = document.createElement('b'); who.textContent = r.name || 'Jugador';
+      var st = document.createElement('span'); st.className = 'stars'; st.textContent = starText(r.stars);
+      st.setAttribute('aria-label', r.stars + ' de 5 estrellas');
+      var dt = document.createElement('span'); dt.className = 'rev-date'; dt.textContent = when(r.date);
+      head.appendChild(who); head.appendChild(st); head.appendChild(dt);
+      el.appendChild(head);
+      if (r.comment) { var p = document.createElement('p'); p.textContent = r.comment; el.appendChild(p); }
+      list.appendChild(el);
+    });
+    if (d.mine && !stars) { stars = d.mine.stars; text.value = d.mine.comment || ''; drawStars(); countWords(); $('rvSend').textContent = 'ACTUALIZAR MI OPINIÓN'; }
+  }
+
+  function showAccount() {
+    $('rvLogin').classList.toggle('hidden', !!session);
+    $('rvWho').textContent = session ? 'Opinas con la cuenta ' + (session.user.email || '') + '.' : '';
+  }
+
+  async function load() {
+    var r = await sb.rpc('get_reviews', { p_limit: 30 });
+    if (r.error) { $('rvCount').textContent = fail(r.error); return; }
+    render(r.data || {});
+  }
+
+  $('rvSend').onclick = async function () {
+    var err = $('rvErr'), ok = $('rvOk'); err.textContent = ''; ok.textContent = '';
+    if (stars < 1) { err.textContent = 'Elige de 1 a 5 estrellas.'; return; }
+    if (countWords() > MAX_WORDS) { err.textContent = 'Tu comentario pasa de ' + MAX_WORDS + ' palabras. Acórtalo un poco.'; text.focus(); return; }
+    var btn = this; btn.disabled = true;
+    try {
+      if (!session) {
+        var email = ($('rvEmail').value || '').trim(), pass = $('rvPass').value || '';
+        if (!email || !pass) { err.textContent = 'Escribe el correo y la contraseña de tu cuenta de la app.'; return; }
+        var a = await sb.auth.signInWithPassword({ email: email, password: pass });
+        if (a.error) { err.textContent = fail(a.error); return; }
+        session = a.data.session; $('rvPass').value = ''; showAccount();
+      }
+      var r = await sb.rpc('submit_review', { p_stars: stars, p_comment: text.value });
+      if (r.error) {
+        if (/NOT_AUTHENTICATED|JWT/i.test(r.error.message || '')) { session = null; showAccount(); }
+        err.textContent = fail(r.error); return;
+      }
+      render(r.data || {});
+      ok.textContent = '¡Gracias! Tu opinión ya está publicada.';
+      btn.textContent = 'ACTUALIZAR MI OPINIÓN';
+    } finally { btn.disabled = false; }
+  };
+
+  sb.auth.getSession().then(function (s) { session = s.data ? s.data.session : null; showAccount(); load(); });
+});
 </script>
 </body>
 </html>

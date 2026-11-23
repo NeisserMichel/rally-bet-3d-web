@@ -1,4 +1,4 @@
-# Rally Bet 3D — página web
+# TotalBetGames — página web
 
 Página pública del juego (GitHub Pages):
 
