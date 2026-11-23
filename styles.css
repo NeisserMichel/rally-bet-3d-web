@@ -111,6 +111,7 @@ footer a { color: var(--muted); }
 .g-ludo { background: #0f99d9; } .g-ludo h3 { color: #1a244d; }
 .g-chess { background: #544073; } .g-chess h3 { color: #dbb8ff; }
 .g-soon { background: #383d4d; } .g-soon h3 { color: #bfc4d6; }
+.g-pool { background: #0d6b57; } .g-pool h3 { color: #a6ffcc; }
 
 /* Opiniones */
 .hidden { display: none !important; }
