@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TotalBetGames — Carreras, Ajedrez, Ludo y Billar 1 vs 1 en línea</title>
-<meta name="description" content="Descarga TotalBetGames para Android: carreras de rally 3D, ajedrez, ludo y billar 1 vs 1 en línea con las mismas monedas. Recarga por WhatsApp y Yape.">
+<title>TotalBetGames — Carreras, Ajedrez, Damas, Dominó y Ludo 1 vs 1 en línea</title>
+<meta name="description" content="Descarga TotalBetGames para Android: carreras de rally 3D, ajedrez, damas, dominó y ludo 1 vs 1 en línea con las mismas monedas. Recarga por WhatsApp y Yape.">
 <link rel="stylesheet" href="styles.css">
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
@@ -20,7 +20,7 @@
 <div class="hero">
   <div class="wrap">
     <h1>TOTAL<span>BET</span>GAMES</h1>
-    <p class="lead">Varios juegos 1 vs 1 en línea en una sola app: <b>Carreras de rally 3D</b>, <b>Ajedrez</b>, <b>Ludo</b> y <b>Billar</b>. Una sola cuenta y las mismas monedas para apostar en todos.</p>
+    <p class="lead">Varios juegos 1 vs 1 en línea en una sola app: <b>Carreras de rally 3D</b>, <b>Ajedrez</b>, <b>Damas</b>, <b>Dominó</b> y <b>Ludo</b>. Una sola cuenta y las mismas monedas para apostar en todos.</p>
     <a class="btn" id="dl-top" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m6 11 6 6 6-6"/><path d="M4 21h16"/></svg>
       DESCARGAR PARA ANDROID
@@ -37,7 +37,8 @@
       <div class="game g-race"><h3>CARRERAS</h3><p>Rally 3D en cuatro mapas sorteados. 10 monedas = 1 vuelta, 20 monedas = 2 vueltas. Se juega con el teléfono acostado.</p></div>
       <div class="game g-ludo"><h3>LUDO</h3><p>El dado lo tira el servidor. 10 monedas = 2 fichas (rápido), 20 monedas = 4 fichas (clásico).</p></div>
       <div class="game g-chess"><h3>AJEDREZ</h3><p>Con reloj y todas las reglas. 10 monedas = 5 minutos por jugador, 20 monedas = 10 minutos.</p></div>
-      <div class="game g-pool"><h3>BILLAR</h3><p>Bola 8 contra otro jugador, 30 segundos por tiro. Apuesta de 10 o 20 monedas. Se juega con el teléfono acostado.</p></div>
+      <div class="game g-checkers"><h3>DAMAS</h3><p>Con reloj y captura obligatoria. 10 monedas = 5 minutos por jugador, 20 monedas = 10 minutos.</p></div>
+      <div class="game g-domino"><h3>DOMINÓ</h3><p>Doble seis 1 vs 1: nadie puede ver tus fichas. 10 monedas = 1 mano, 20 monedas = gana quien gane 2 manos.</p></div>
     </div>
   </div>
 </section>
@@ -131,9 +132,10 @@
 <section id="preguntas">
   <div class="wrap">
     <h2>Preguntas frecuentes</h2>
-    <details><summary>¿Qué juegos hay y cómo elijo?</summary><p>Al abrir la app aparece la pantalla de juegos (con el teléfono parado): <b>Carreras</b>, <b>Ludo</b>, <b>Ajedrez</b> y <b>Billar</b>. Toca la tarjeta del juego que quieras. Carreras y Billar giran la pantalla a horizontal; Ludo y Ajedrez se juegan en vertical.</p></details>
-    <details><summary>¿Puedo practicar sin gastar monedas?</summary><p>Sí. En cada juego hay un botón <b>PRÁCTICA (SIN MONEDAS)</b>: en Ajedrez y Ludo juegas contra la computadora, en Billar tienes la mesa libre para embocar, y en Carreras corres contra el reloj.</p></details>
-    <details><summary>¿Cómo se juega el Billar?</summary><p>Es bola 8. Arrastra el dedo sobre la mesa para apuntar, elige la fuerza en la barra y toca <b>TIRAR</b>. La primera bola que embocas decide si te tocan las lisas o las rayadas; si embocas una tuya sigues tirando. Es falta embocar la blanca o no tocar primero una bola tuya: tu rival coloca la blanca donde quiera. Gana quien emboca la negra (8) después de todas las suyas; si la embocas antes, pierdes. Tienes 30 segundos por tiro.</p></details>
+    <details><summary>¿Qué juegos hay y cómo elijo?</summary><p>Al abrir la app aparece la pantalla de juegos (con el teléfono parado): <b>Carreras</b>, <b>Ludo</b>, <b>Ajedrez</b>, <b>Damas</b> y <b>Dominó</b>. Toca la tarjeta del juego que quieras. Carreras gira la pantalla a horizontal; los demás se juegan en vertical.</p></details>
+    <details><summary>¿Puedo practicar sin gastar monedas?</summary><p>Sí. En cada juego hay un botón <b>PRÁCTICA (SIN MONEDAS)</b>: en Ajedrez, Damas, Dominó y Ludo juegas contra la computadora, y en Carreras corres contra el reloj.</p></details>
+    <details><summary>¿Cómo se juegan las Damas?</summary><p>Se juega en las casillas oscuras y empiezan las blancas. Los peones avanzan en diagonal y capturan saltando, también hacia atrás. <b>Capturar es obligatorio</b> y hay que elegir la jugada que captura más fichas; si después de saltar puedes seguir capturando, sigues. El peón que llega al otro lado se corona <b>dama</b>, que se mueve y captura a cualquier distancia en diagonal. Pierde quien se queda sin fichas o sin jugadas. Cada jugador tiene su reloj: 5 minutos (10 monedas) o 10 minutos (20 monedas).</p></details>
+    <details><summary>¿Cómo se juega el Dominó?</summary><p>Fichas doble seis: cada uno recibe 7 y el resto queda en el pozo. En tu turno pones una ficha que coincida con una de las puntas. Si no tienes ninguna que sirva, robas del pozo automáticamente; si el pozo se acabó, pasas. Gana la mano quien se queda sin fichas; si nadie puede jugar (tranque), gana quien suma menos puntos. Con 10 monedas se juega 1 mano y con 20 gana quien gane 2 manos. Tienes 30 segundos por turno. El servidor reparte las fichas y solo te envía las tuyas: nadie puede ver las del rival.</p></details>
     <details><summary>¿Las monedas sirven para todos los juegos?</summary><p>Sí. Tienes un solo saldo de monedas y lo usas en cualquier juego. En todos eliges apostar <b>10</b> o <b>20 monedas</b> y solo juegas contra alguien con la misma apuesta.</p></details>
     <details><summary>¿Cómo se juega el Ajedrez?</summary><p>Toca una pieza y luego la casilla de destino. Cada jugador tiene su reloj: <b>5 minutos</b> con apuesta de 10 monedas o <b>10 minutos</b> con 20. Gana quien da jaque mate, o si al rival se le acaba el tiempo, se rinde o se desconecta. Si hay tablas (empate) nadie gana ni pierde monedas.</p></details>
     <details><summary>¿Cómo se juega el Ludo?</summary><p>Tocas el dado para tirar (lo tira el servidor, nadie puede alterarlo). Con <b>6</b> sacas una ficha y tiras otra vez. Si caes sobre una ficha rival fuera de una casilla segura, vuelve a su casa. Gana quien lleva todas sus fichas a la meta: <b>2 fichas</b> con apuesta de 10 monedas o <b>4 fichas</b> con 20. Tienes 30 segundos por turno; si dejas pasar 3 turnos pierdes.</p></details>
