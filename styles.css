@@ -27,6 +27,9 @@ img { max-width: 100%; display: block; }
 .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: 12px; }
 .brand { font-weight: 800; letter-spacing: .5px; font-size: 19px; color: var(--text); text-decoration: none; }
 .brand span { color: var(--accent); }
+.hero-icon { display: block; width: 112px; height: 112px; border-radius: 26px; margin: 0 0 14px; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.brand { display: inline-flex; align-items: center; white-space: nowrap; }
+.brand .logo { width: 30px; height: 30px; border-radius: 7px; flex: 0 0 auto; margin-right: 9px; }
 .nav { display: flex; gap: 16px; font-size: 15px; }
 .nav a { color: var(--muted); text-decoration: none; }
 .nav a:hover { color: var(--text); }
