@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TotalBetGames — Carreras, Ajedrez, Damas, Dominó y Ludo 1 vs 1 en línea</title>
-<meta name="description" content="Descarga TotalBetGames para Android: carreras de rally 3D, ajedrez, damas, dominó y ludo 1 vs 1 en línea con las mismas monedas. Recarga por WhatsApp y Yape.">
+<meta name="description" content="Descarga TotalBetGames para Android: carreras de rally 3D, ajedrez, damas, dominó y ludo 1 vs 1 en línea con una sola cuenta. Recarga por WhatsApp y Yape.">
 <link rel="stylesheet" href="styles.css">
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
@@ -20,7 +20,7 @@
 <div class="hero">
   <div class="wrap">
     <h1>TOTAL<span>BET</span>GAMES</h1>
-    <p class="lead">Varios juegos 1 vs 1 en línea en una sola app: <b>Carreras de rally 3D</b>, <b>Ajedrez</b>, <b>Damas</b>, <b>Dominó</b> y <b>Ludo</b>. Una sola cuenta y las mismas monedas para apostar en todos.</p>
+    <p class="lead">Varios juegos 1 vs 1 en línea en una sola app: <b>Carreras de rally 3D</b>, <b>Ajedrez</b>, <b>Damas</b>, <b>Dominó</b> y <b>Ludo</b>. Una sola cuenta y las mismas monedas para apostar en los juegos de mesa; las carreras se juegan por puntos.</p>
     <a class="btn" id="dl-top" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m6 11 6 6 6-6"/><path d="M4 21h16"/></svg>
       DESCARGAR PARA ANDROID
@@ -37,9 +37,9 @@
 <section id="juegos">
   <div class="wrap">
     <h2>Juegos disponibles</h2>
-    <p class="sub">Al abrir la app eliges el juego. En todos apuestas 10 o 20 monedas contra otro jugador con la misma apuesta, y todos tienen <b>práctica gratis</b> sin monedas.</p>
+    <p class="sub">Al abrir la app eliges el juego. En Ajedrez, Damas, Dominó y Ludo apuestas 10 o 20 monedas contra otro jugador con la misma apuesta; las Carreras se juegan por puntos. Todos tienen <b>práctica gratis</b> sin monedas.</p>
     <div class="games">
-      <div class="game g-race"><h3>CARRERAS</h3><p>Rally 3D en cuatro mapas sorteados. 10 monedas = 1 vuelta, 20 monedas = 2 vueltas. Se juega con el teléfono acostado.</p></div>
+      <div class="game g-race"><h3>CARRERAS</h3><p>Rally 3D en cuatro mapas sorteados, a 1 o 2 vueltas. <b>Sin apuesta de monedas</b>: se compite por puntos del ranking. Se juega con el teléfono acostado.</p></div>
       <div class="game g-ludo"><h3>LUDO</h3><p>El dado lo tira el servidor. Cada jugador lleva 4 fichas a la meta. Apuesta de 10 o 20 monedas.</p></div>
       <div class="game g-chess"><h3>AJEDREZ</h3><p>Con reloj y todas las reglas. 10 monedas = 5 minutos por jugador, 20 monedas = 10 minutos.</p></div>
       <div class="game g-checkers"><h3>DAMAS</h3><p>Con reloj y captura obligatoria. 10 monedas = 5 minutos por jugador, 20 monedas = 10 minutos.</p></div>
@@ -65,7 +65,7 @@
 <section id="recargar">
   <div class="wrap">
     <h2>Recargar monedas</h2>
-    <p class="sub">1 moneda = S/ 0,10. Las mismas monedas sirven en todos los juegos: cada partida en línea apuesta 10 o 20 monedas (el ganador las gana y el perdedor las pierde). Las monedas son solo para jugar y no se cambian por dinero.</p>
+    <p class="sub">1 moneda = S/ 0,10. Las mismas monedas sirven en Ajedrez, Damas, Dominó y Ludo: cada partida en línea apuesta 10 o 20 monedas (el ganador las gana y el perdedor las pierde). Las monedas son solo para jugar y no se cambian por dinero.</p>
 
     <div class="notice" role="note">
       <strong>IMPORTANTE</strong>
@@ -141,18 +141,18 @@
     <details><summary>¿Puedo practicar sin gastar monedas?</summary><p>Sí. En cada juego hay un botón <b>PRÁCTICA (SIN MONEDAS)</b>: en Ajedrez, Damas, Dominó y Ludo juegas contra la computadora, y en Carreras corres contra el reloj.</p></details>
     <details><summary>¿Cómo se juegan las Damas?</summary><p>Se juega en las casillas oscuras y empiezan las blancas. Los peones avanzan en diagonal y capturan saltando, también hacia atrás. <b>Capturar es obligatorio</b> y hay que elegir la jugada que captura más fichas; si después de saltar puedes seguir capturando, sigues. El peón que llega al otro lado se corona <b>dama</b>, que se mueve y captura a cualquier distancia en diagonal. Pierde quien se queda sin fichas o sin jugadas. Cada jugador tiene su reloj: 5 minutos (10 monedas) o 10 minutos (20 monedas).</p></details>
     <details><summary>¿Cómo se juega el Dominó?</summary><p>Fichas doble seis: cada uno recibe 7 y el resto queda en el pozo. En tu turno pones una ficha que coincida con una de las puntas. Si no tienes ninguna que sirva, robas del pozo automáticamente; si el pozo se acabó, pasas. Gana la mano quien se queda sin fichas; si nadie puede jugar (tranque), gana quien suma menos puntos. Con 10 monedas se juega 1 mano y con 20 gana quien gane 2 manos. Tienes 30 segundos por turno. El servidor reparte las fichas y solo te envía las tuyas: nadie puede ver las del rival.</p></details>
-    <details><summary>¿Las monedas sirven para todos los juegos?</summary><p>Sí. Tienes un solo saldo de monedas y lo usas en cualquier juego. En todos eliges apostar <b>10</b> o <b>20 monedas</b> y solo juegas contra alguien con la misma apuesta.</p></details>
+    <details><summary>¿Las monedas sirven para todos los juegos?</summary><p>Tienes un solo saldo de monedas para Ajedrez, Damas, Dominó y Ludo. En ellos eliges apostar <b>10</b> o <b>20 monedas</b> y solo juegas contra alguien con la misma apuesta. Las Carreras no tienen apuesta: se juegan por puntos del ranking. Con las monedas también puedes comprar autos en el Garaje.</p></details>
     <details><summary>¿Cómo se juega el Ajedrez?</summary><p>Toca una pieza y luego la casilla de destino. Cada jugador tiene su reloj: <b>5 minutos</b> con apuesta de 10 monedas o <b>10 minutos</b> con 20. Gana quien da jaque mate, o si al rival se le acaba el tiempo, se rinde o se desconecta. Si hay tablas (empate) nadie gana ni pierde monedas.</p></details>
     <details><summary>¿Cómo se juega el Ludo?</summary><p>Tocas el dado para tirar (lo tira el servidor, nadie puede alterarlo). Con <b>6</b> sacas una ficha y tiras otra vez. Si caes sobre una ficha rival fuera de una casilla segura, vuelve a su casa. Cada jugador tiene <b>4 fichas</b> y gana quien las lleva todas a la meta, apueste 10 o 20 monedas. Tienes 30 segundos por turno; si dejas pasar 3 turnos pierdes.</p></details>
     <details><summary>Carreras: ¿en qué mapa se juega?</summary><p>En línea el mapa se sortea en cada partida y los dos jugadores corren en el mismo: Ancient City, el Desierto, la Pista o Maravillas del mundo (pasas junto a Machu Picchu, las Pirámides de Giza, el Coliseo, el Taj Mahal, la Gran Muralla China, Chichén Itzá y Petra). Si tu rival tiene una versión más antigua del juego, solo sale un mapa que tengan los dos. En el modo práctica puedes elegirlo.</p></details>
-    <details><summary>Carreras: ¿cuántas monedas se apuestan?</summary><p>Tú eliges: <b>10 monedas a 1 vuelta</b> o <b>20 monedas a 2 vueltas</b>. El ganador suma la apuesta y el perdedor la pierde. Si alguien se desconecta o abandona, pierde la partida. Necesitas al menos esa cantidad de monedas. El modo práctica es gratis.</p></details>
-    <details><summary>Carreras: ¿con quién me emparejan?</summary><p>Solo con pilotos que eligieron <b>la misma apuesta</b> (10 o 20 monedas) y que usan <b>el mismo auto</b> que tú, tanto en partida rápida como en salas con código. Así la carrera es pareja. Cambia de auto en el GARAJE.</p></details>
+    <details><summary>Carreras: ¿se apuestan monedas?</summary><p><b>No.</b> Las carreras en línea se juegan solo por puntos del ranking: tus monedas no cambian, ganes o pierdas, y no necesitas monedas para correr. Si alguien se desconecta o abandona, pierde la carrera. Las monedas se apuestan en Ajedrez, Damas, Dominó y Ludo.</p></details>
+    <details><summary>Carreras: ¿con quién me emparejan?</summary><p>Solo con pilotos que eligieron <b>las mismas vueltas</b> (1 o 2) y que usan <b>el mismo auto</b> que tú, tanto en partida rápida como en salas con código. Así la carrera es pareja. Cambia de auto en el GARAJE.</p></details>
     <details><summary>¿Los autos chocan entre sí?</summary><p>No. En línea el auto de tu rival es un <b>auto fantasma</b>: lo puedes atravesar sin choques ni empujones, y se vuelve transparente cuando está cerca. La largada es en una recta, así nadie sale con ventaja.</p></details>
     <details><summary>¿Qué son las monedas de regalo?</summary><p>Cada jugador nuevo recibe <b>30 monedas de regalo</b> para probar los juegos en línea (una sola vez por teléfono). Se usan primero y cada partida descuenta la apuesta de regalo <b>ganes o pierdas</b>; esas monedas no pasan a tu rival. Si tu rival juega con monedas de regalo, tus monedas no cambian. Las monedas de regalo no sirven para comprar autos.</p></details>
     <details><summary>¿Qué hay en el Garaje?</summary><p>Autos que se compran con monedas: <b>Halcón</b> (250 monedas, 85 km/h), <b>Trueno</b> (500, 90 km/h) y <b>Leyenda</b> (1000, 96 km/h). Son más rápidos y vistosos que el Clásico. Solo compites contra pilotos con el mismo auto.</p></details>
     <details><summary>Me sale "La app no se instaló" o "conflicto con un paquete existente"</summary><p>Pasa al pasar a la versión 2.3.0 porque la app cambió a su firma oficial. Desinstala la app que tienes (mantén presionado su ícono → Desinstalar) y vuelve a instalar la descargada. No pierdes nada: tu cuenta, monedas y autos están en el servidor; solo inicia sesión otra vez y vuelve a elegir tus controles en Ajustes.</p></details>
     <details><summary>La app me pide actualizar</summary><p>Cuando sale una versión nueva, la app muestra un aviso con el botón <b>ACTUALIZAR</b> y no deja jugar hasta instalarla. Descarga el APK desde esta página y ábrelo: tus monedas, autos y récords se mantienen.</p></details>
-    <details><summary>¿Qué pasa si alguien hace trampa?</summary><p>El servidor revisa cada carrera (tiempos, velocidades, autos y recorrido), valida cada jugada de ajedrez, tira el dado del ludo y avisa al administrador si algo es imposible. Las monedas obtenidas con trampas o juegos modificados se pueden retirar y la cuenta puede ser bloqueada.</p></details>
+    <details><summary>¿Qué pasa si alguien hace trampa?</summary><p>En Ajedrez, Damas, Dominó y Ludo el servidor valida cada jugada, tira los dados y guarda las fichas ocultas; además, cada jugador solo puede tener una partida en juego a la vez. Las carreras no tienen apuesta de monedas. Las monedas obtenidas con trampas o juegos modificados se pueden retirar y la cuenta puede ser bloqueada.</p></details>
     <details><summary>¿Puedo recargar desde otro número?</summary><p>No. Solo procesamos recargas cuando nos escribes por WhatsApp y yapeas desde el <b>mismo número de celular que registraste</b> en el juego. Si usas otro número, tu recarga no será procesada hasta que te comuniques desde tu número registrado. Si cambiaste de número, escríbenos para actualizarlo.</p></details>
     <details><summary>¿Puedo tener dos cuentas?</summary><p>No. Cada correo y cada número de celular solo se pueden usar en una cuenta.</p></details>
     <details><summary>¿Las monedas se pueden cambiar por dinero?</summary><p>No. Las monedas son solo para jugar dentro de TotalBetGames y no tienen valor en dinero.</p></details>

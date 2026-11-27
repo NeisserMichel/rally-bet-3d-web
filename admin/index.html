@@ -23,7 +23,7 @@
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
   th { color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--panel); }
-  td.num { text-align: right; white-space: nowrap; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
   tr.anulada td { color: #6f7785; text-decoration: line-through; }
   tr.anulada td.act { text-decoration: none; }
   .tablewrap { overflow-x: auto; max-height: 560px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; }
@@ -40,6 +40,20 @@
   .sev.media { background: rgba(255,196,0,.18); color: #ffd25c; }
   .sev.baja { background: rgba(255,255,255,.10); color: var(--muted); }
   tr.done td { opacity: .5; }
+  /* Cuadre de monedas */
+  .cuadre { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .cuadre .stat .v { font-size: 24px; }
+  .cuadre .stat .k b { color: var(--yellow); }
+  .cuadre .stat.res { border-color: var(--accent); }
+  .verdict { margin-top: 12px; padding: 14px 16px; border-radius: 12px; font-size: 18px; font-weight: 800; }
+  .verdict.ok { background: rgba(95,224,138,.14); border: 1px solid var(--ok); color: var(--ok); }
+  .verdict.bad { background: rgba(255,107,97,.14); border: 1px solid var(--danger); color: var(--danger); }
+  .verdict.warn { background: rgba(255,196,0,.12); border: 1px solid #ffd25c; color: #ffd25c; }
+  .verdict .s { display: block; font-size: 14px; font-weight: 400; color: var(--text); margin-top: 4px; }
+  .giftinfo { margin-top: 10px; padding: 10px 14px; border-radius: 10px; background: var(--panel-2); border: 1px dashed var(--line); color: var(--muted); }
+  .giftinfo b { color: var(--text); }
+  @media (max-width: 900px) { .cuadre { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .cuadre { grid-template-columns: 1fr; } }
 </style>
 <script src="../config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -74,6 +88,45 @@
   <!-- Panel -->
   <div id="panel" class="hidden">
     <div class="stats" id="stats"></div>
+
+    <section style="padding:26px 0 10px" id="cuadreSec">
+      <h2>Cuadre de monedas</h2>
+      <p class="sub">Comprueba que en el juego no existan más monedas de las que entraron por recargas pagadas. Lo calcula la base de datos (Supabase), no la app.</p>
+      <div class="card">
+        <div class="cuadre">
+          <div class="stat"><div class="k"><b>A.</b> Monedas recargadas</div><div class="v" id="cA">…</div><div class="s">Recargas aprobadas</div></div>
+          <div class="stat"><div class="k"><b>B.</b> Retiradas por el admin</div><div class="v" id="cB">…</div><div class="s" id="cBs">Restadas + recargas anuladas</div></div>
+          <div class="stat"><div class="k"><b>C.</b> Gastadas en autos</div><div class="v" id="cC">…</div><div class="s">Compras en el Garaje</div></div>
+          <div class="stat res"><div class="k"><b>D.</b> Deberían existir</div><div class="v" id="cD">…</div><div class="s">A − B − C</div></div>
+          <div class="stat res"><div class="k"><b>E.</b> Existen</div><div class="v" id="cE">…</div><div class="s" id="cEs">Saldos normales de los jugadores</div></div>
+        </div>
+        <div class="verdict" id="cVerdict">Calculando…</div>
+        <div class="giftinfo" id="cGift">Monedas de regalo en circulación: …</div>
+        <div class="hint" id="cWhen" style="margin-top:8px"></div>
+        <div class="err" id="cErr"></div>
+
+        <div class="row" style="margin-top:18px">
+          <div><label class="f" for="cFrom">Desde</label><input class="in" id="cFrom" type="date"></div>
+          <div><label class="f" for="cTo">Hasta</label><input class="in" id="cTo" type="date"></div>
+          <div style="flex:0 0 auto"><button class="btn gray" id="cFilter" type="button">FILTRAR</button></div>
+        </div>
+        <div class="hint" style="margin-top:6px">Las fechas solo filtran las dos tablas. El cuadre de arriba siempre usa todo el historial.</div>
+
+        <h3 style="margin:18px 0 8px">Recargas aprobadas <button class="btn small gray" id="cCsvR" type="button" style="margin-left:8px">EXPORTAR CSV</button></h3>
+        <div class="hint" id="cTotR" style="margin-bottom:6px"></div>
+        <div class="tablewrap" style="max-height:360px">
+          <table><thead><tr><th>Fecha (Lima)</th><th>ID</th><th>Jugador</th><th class="num">Monto S/</th><th class="num">Monedas</th><th>Estado</th></tr></thead>
+            <tbody id="cRowsR"></tbody></table>
+        </div>
+
+        <h3 style="margin:18px 0 8px">Monedas retiradas por el administrador <button class="btn small gray" id="cCsvB" type="button" style="margin-left:8px">EXPORTAR CSV</button></h3>
+        <div class="hint" id="cTotB" style="margin-bottom:6px"></div>
+        <div class="tablewrap" style="max-height:360px">
+          <table><thead><tr><th>Fecha (Lima)</th><th>ID</th><th>Jugador</th><th class="num">Monedas restadas</th><th style="padding-left:24px">Motivo</th></tr></thead>
+            <tbody id="cRowsB"></tbody></table>
+        </div>
+      </div>
+    </section>
 
     <section style="padding:26px 0 10px">
       <h2>Alertas de posible fraude <span class="badge zero" id="aCount">0</span></h2>
@@ -270,7 +323,7 @@
     if (!r.data) { show('notAdmin'); return; }
     show('panel');
     $('from').value = todayLima(); $('to').value = todayLima();
-    renderAmounts(); loadSummary(); loadHistory(); loadMovements(); scanAndLoadAlerts(); loadVersion(); loadReviews();
+    renderAmounts(); loadSummary(); loadHistory(); loadMovements(); scanAndLoadAlerts(); loadVersion(); loadReviews(); startAudit();
   }
   $('loginForm').onsubmit = async function (e) {
     e.preventDefault();
@@ -281,6 +334,94 @@
     boot();
   };
   $('logout').onclick = async function () { await sb.auth.signOut(); boot(); };
+
+  // ---------------------------------------------------------------- cuadre de monedas
+  var audit = null, auditTimer = null;
+  function n(x) { return Number(x || 0).toLocaleString('es-PE'); }
+  function fillRows(tb, rows, cols, empty) {
+    tb.innerHTML = '';
+    if (!rows.length) { var tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = cols; td.textContent = empty; td.style.color = 'var(--muted)'; tr.appendChild(td); tb.appendChild(tr); return; }
+    rows.forEach(function (cells) {
+      var tr = document.createElement('tr');
+      if (cells.cls) tr.className = cells.cls;
+      cells.forEach(function (v, i) { var td = document.createElement('td'); if (cells.num && cells.num.indexOf(i) >= 0) td.className = 'num'; td.textContent = v; tr.appendChild(td); });
+      tb.appendChild(tr);
+    });
+  }
+  async function loadAudit() {
+    var r = await sb.rpc('admin_coin_audit', { p_from: $('cFrom').value || null, p_to: $('cTo').value || null });
+    if (r.error) {
+      var t = msg(r.error);
+      $('cErr').textContent = /Falta ejecutar/.test(t) ? 'Falta ejecutar el archivo SQL 018 en Supabase.' : t;
+      return;
+    }
+    $('cErr').textContent = '';
+    var a = audit = r.data;
+    $('cA').textContent = n(a.a_recharged);
+    $('cB').textContent = n(a.b_removed);
+    $('cBs').textContent = n(a.b_deducted) + ' restadas + ' + n(a.b_reversed) + ' de recargas anuladas';
+    $('cC').textContent = n(a.c_cars);
+    $('cD').textContent = n(a.d_expected);
+    $('cE').textContent = n(a.e_existing);
+    $('cEs').textContent = 'Saldos normales de ' + n(a.players_with_coins) + ' jugadores con monedas';
+    var d = Number(a.difference), v = $('cVerdict');
+    if (d === 0) {
+      v.className = 'verdict ok';
+      v.innerHTML = '✅ Cuadre correcto<span class="s"></span>';
+      v.querySelector('.s').textContent = 'Diferencia (E − D) = 0. Todas las monedas que existen vienen de recargas pagadas.';
+    } else if (d > 0) {
+      v.className = 'verdict bad';
+      v.innerHTML = '<span class="t"></span><span class="s"></span>';
+      v.querySelector('.t').textContent = '🔴 Alerta: hay ' + n(d) + ' monedas que no vienen de ninguna recarga';
+      v.querySelector('.s').textContent = 'Diferencia (E − D) = +' + n(d) + '. Alguien creó monedas de forma fraudulenta o hay un error en el sistema. ' +
+        'Las apuestas no cambian el total (solo pasan monedas de un jugador a otro), así que el problema viene de otro lado. Revisa "Alertas de posible fraude" y "Movimientos de monedas".';
+    } else {
+      v.className = 'verdict warn';
+      v.innerHTML = '<span class="t"></span><span class="s"></span>';
+      v.querySelector('.t').textContent = '🟡 Faltan ' + n(-d) + ' monedas';
+      v.querySelector('.s').textContent = 'Diferencia (E − D) = −' + n(-d) + '. Existen menos monedas de las esperadas (no hay monedas de más). Suele pasar si se borró la cuenta de un jugador que tenía saldo.';
+    }
+    $('cGift').innerHTML = 'Monedas de regalo en circulación: <b></b> · dato informativo, no entra en el cuadre (no vienen de pagos y nunca pasan al rival).';
+    $('cGift').querySelector('b').textContent = n(a.gift_in_circulation);
+    $('cWhen').textContent = 'Actualizado: ' + limaDate(a.at) + ' · se actualiza solo cada 15 segundos' +
+      (Number(a.bets_net) !== 0 ? ' · ⚠ las apuestas no suman 0 (' + n(a.bets_net) + ')' : ' · apuestas: suman 0 ✓');
+
+    var rr = (a.recharges || []), tot = 0, totS = 0;
+    fillRows($('cRowsR'), rr.map(function (x) {
+      if (x.status === 'ok') { tot += Number(x.coins); totS += Number(x.soles); }
+      var c = [limaDate(x.date), '#' + x.player_number, x.username || '', Number(x.soles).toFixed(2), n(x.coins), x.status === 'ok' ? 'Aprobada' : 'Aprobada y luego anulada'];
+      c.num = [3, 4]; if (x.status !== 'ok') c.cls = 'anulada'; return c;
+    }), 6, 'Sin recargas en esas fechas.');
+    $('cTotR').textContent = rr.length + ' recargas en las fechas elegidas · vigentes: ' + soles(totS) + ' = ' + n(tot) + ' monedas';
+    var rb = (a.removed || []), totB = 0;
+    fillRows($('cRowsB'), rb.map(function (x) {
+      totB += Number(x.coins);
+      var c = [limaDate(x.date), '#' + x.player_number, x.username || '', n(x.coins), x.reason]; c.num = [3]; return c;
+    }), 5, 'Sin monedas retiradas en esas fechas.');
+    $('cTotB').textContent = rb.length + ' retiros en las fechas elegidas · total: ' + n(totB) + ' monedas';
+  }
+  function startAudit() {
+    loadAudit();
+    if (auditTimer) clearInterval(auditTimer);
+    auditTimer = setInterval(function () { if (!document.hidden) loadAudit(); }, 15000);
+  }
+  $('cFilter').onclick = loadAudit;
+  function csvDownload(name, header, rows) {
+    var lines = [header].concat(rows).map(function (r) { return r.map(function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }).join(','); });
+    var blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    var link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = name; link.click();
+  }
+  function rangeName() { return ($('cFrom').value || 'inicio') + '_a_' + ($('cTo').value || 'hoy'); }
+  $('cCsvR').onclick = function () {
+    if (!audit) return;
+    csvDownload('recargas_aprobadas_' + rangeName() + '.csv', ['Fecha (Lima)', 'ID jugador', 'Jugador', 'Monto S/', 'Monedas', 'Estado'],
+      (audit.recharges || []).map(function (x) { return [limaDate(x.date), x.player_number, x.username || '', Number(x.soles).toFixed(2), x.coins, x.status === 'ok' ? 'Aprobada' : 'Anulada']; }));
+  };
+  $('cCsvB').onclick = function () {
+    if (!audit) return;
+    csvDownload('monedas_retiradas_' + rangeName() + '.csv', ['Fecha (Lima)', 'ID jugador', 'Jugador', 'Monedas restadas', 'Motivo'],
+      (audit.removed || []).map(function (x) { return [limaDate(x.date), x.player_number, x.username || '', x.coins, x.reason]; }));
+  };
 
   // ---------------------------------------------------------------- resumen
   async function loadSummary() {
@@ -400,7 +541,7 @@
     chosen.coins = x.new_balance; choose(chosen);
     $('okMsg').textContent = 'Listo: ' + x.coins_added + ' monedas cargadas a ' + x.username + ' (#' + x.player_number + '). Nuevo saldo: ' + x.new_balance + ' monedas.';
     $('op').value = ''; $('note').value = '';
-    loadSummary(); loadHistory(); loadMovements();
+    loadSummary(); loadHistory(); loadMovements(); loadAudit();
   };
 
   // ---------------------------------------------------------------- historial
@@ -442,7 +583,7 @@
     btn.disabled = true;
     var r = await sb.rpc('admin_reverse_recharge', { p_recharge_id: x.id, p_reason: reason });
     if (r.error) { $('histErr').textContent = msg(r.error); btn.disabled = false; return; }
-    loadSummary(); loadHistory(); loadMovements();
+    loadSummary(); loadHistory(); loadMovements(); loadAudit();
   }
   $('filter').onclick = loadHistory;
   $('csv').onclick = function () {
@@ -498,7 +639,7 @@
     var x = r.data[0];
     $('dOk').textContent = 'Listo: se restaron ' + x.coins_removed + ' monedas a ' + x.username + ' (#' + x.player_number + '). Nuevo saldo: ' + x.new_balance + ' monedas.';
     $('dCoins').value = ''; $('dReason').value = '';
-    dLookup(); $('mId').value = String(x.player_number); loadMovements();
+    dLookup(); $('mId').value = String(x.player_number); loadMovements(); loadAudit();
   };
 
   // ---------------------------------------------------------------- movimientos
