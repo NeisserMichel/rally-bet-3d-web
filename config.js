@@ -10,8 +10,8 @@ window.RALLY = {
 
   // El APK está en la raíz de esta misma página (se reemplaza en cada versión nueva)
   apkUrl: "TotalBetGames.apk",
-  apkVersion: "2.3.2",
-  apkVersionCode: 21,   // el mismo número que version.json y AppVersion.Code del juego
+  apkVersion: "2.3.3",
+  apkVersionCode: 22,   // el mismo número que version.json y AppVersion.Code del juego
 
   solesPerCoin: 0.10,
   amounts: [3, 5, 10, 20],
